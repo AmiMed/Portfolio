@@ -16,7 +16,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "1",
-    title: "App. Mobile ARVEA Business",
+    title: "Application Mobile ARVEA Business",
     description: "Application mobile professionnelle ARVEA",
     longDescription: "Conception, développement itératif en Agile, résolution de problèmes en production, et déploiement sur les stores (Google Play, App Store Connect, Huawei AppGallery). Fonctionnalités métier complètes avec intégration backend Laravel.",
     image: "/images/project5.jpg",
@@ -28,7 +28,7 @@ export const projects: Project[] = [
   },
   {
     id: "2",
-    title: "App. Mobile Pointiny",
+    title: "Application Mobile Pointiny",
     description: "Application mobile pour automatiser le traitement des factures",
     longDescription: "Cycle de développement complet en méthode Agile (Scrum/Kanban), de la conception UI/UX sur Figma au déploiement multi-stores. Suivi des erreurs en production via Sentry et pipeline CI/CD avec Docker.",
     image: "/images/project4.jpg",
@@ -40,7 +40,7 @@ export const projects: Project[] = [
   },
   {
     id: "3",
-    title: "App. Web ARVEA",
+    title: "Application Web Métier ARVEA",
     description: "Application web métier ARVEA",
     longDescription: "La gestion métier interne d'ARVEA. Solution fullstack avec API Laravel, base de données PostgreSQL. Développée en environnement Agile avec Jira et Bitbucket.",
     image: "/images/project3.png",
@@ -53,7 +53,7 @@ export const projects: Project[] = [
 
   {
     id: "4",
-    title: "App. Web Backoffice Pointiny",
+    title: "Application Web Backoffice Pointiny",
     description: "Application Backoffice pour la gestion de l'application mobile Pointiny",
     longDescription: "Suivi des factures, gestion des utilisateurs, dashboard statistiques.",
     image: "/images/project7.png",
@@ -65,7 +65,7 @@ export const projects: Project[] = [
   },
   {
     id: "5",
-    title: "App. Web Plateforme de Gestion Juridique",
+    title: "Application Web Plateforme de Gestion Juridique",
     description: "Plateforme web de gestion des services juridiques pour avocats",
     longDescription: "Projet de fin d'études d'ingénieur réalisé chez Groupe Adaming. Plateforme complète permettant aux cabinets d'avocats de gérer leurs dossiers juridiques, clients et rendez-vous. Architecture Spring Boot / Angular avec persistence SQL et intégration Firebase pour les notifications.",
     image: "/images/project2.png",
@@ -75,7 +75,7 @@ export const projects: Project[] = [
   },
   {
     id: "6",
-    title: "App. Web Plateforme de Réservation de Maisons d'Hôtes",
+    title: "Application Web Plateforme de Réservation de Maisons d'Hôtes",
     description: "Système de réservation en ligne pour maisons d'hôtes",
     longDescription: "Projet de fin d'études de licence réalisé chez Ozone-Dev. Plateforme web permettant aux voyageurs de rechercher, réserver et payer des nuitées dans des maisons d'hôtes. Interface responsive développée avec Symfony et Bootstrap, avec gestion complète des disponibilités et réservations en base SQL.",
     image: "/images/project1.png",
