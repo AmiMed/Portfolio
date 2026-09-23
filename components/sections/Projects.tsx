@@ -180,7 +180,6 @@ function ProjectCard({
   onHoverEnd: () => void
 }) {
   const [imageError, setImageError] = useState(false)
- console.log("imageError" , project.image)
   return (
     <motion.article
       initial={{ opacity: 0, y: 30 }}

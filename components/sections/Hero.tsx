@@ -2,9 +2,10 @@
 
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
+import { MessageCircle } from 'lucide-react'
 import Image from 'next/image'
 
-export function Hero() {
+export function Hero({ onChatOpen }: { onChatOpen: () => void }) {
   return (
     <section id="home" className="min-h-screen flex items-center justify-center">
       <motion.div
@@ -36,12 +37,21 @@ export function Hero() {
         <p className="text-xl text-muted-foreground mb-8">
           Software Engineer & Full Stack Developer
         </p>
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-4 justify-center flex-wrap">
           <Button size="lg">
             <a href="#projects">View My Work</a>
           </Button>
           <Button size="lg" variant="outline">
             <a href="#contact">Contact Me</a>
+          </Button>
+          
+          {/* Chat button triggers the prop passed from the parent */}
+          <Button 
+            size="lg" 
+            variant="secondary"
+            onClick={onChatOpen}
+          >
+            Ask My Portfolio AI
           </Button>
         </div>
       </motion.div>

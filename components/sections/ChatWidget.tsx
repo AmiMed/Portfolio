@@ -1,221 +1,148 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useChat } from '@ai-sdk/react'
+import { MessageCircle, X, Send } from 'lucide-react'
 
-interface Message {
-  role: 'user' | 'assistant'
-  content: string
-}
-
-const SUGGESTIONS = [
-  'What technologies do you use?',
-  'Show me your projects',
-  'Are you available for work?',
-  'What are your rates?',
-]
-
-export function ChatWidget() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: "Hey! 👋 I'm John's AI assistant. Ask me anything about his skills, projects, or availability.",
-    },
-  ])
+// Accept isOpen and setIsOpen as props from the parent
+export function ChatWidget({ 
+  isOpen, 
+  setIsOpen 
+}: { 
+  isOpen: boolean; 
+  setIsOpen: (open: boolean) => void 
+}) {
   const [input, setInput] = useState('')
-  const [loading, setLoading] = useState(false)
-  const bottomRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  
+  // useChat defaults to '/api/chat' automatically
+  const { messages, sendMessage, status } = useChat()
+
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const isLoading = status === 'submitted' || status === 'streaming'
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, isLoading])
 
-  useEffect(() => {
-    if (isOpen) inputRef.current?.focus()
-  }, [isOpen])
-
-  const send = async (text: string) => {
-    if (!text.trim() || loading) return
-
-    const userMsg: Message = { role: 'user', content: text.trim() }
-    setMessages((prev) => [...prev, userMsg])
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!input.trim() || isLoading) return
+    
+    sendMessage({ text: input }) 
     setInput('')
-    setLoading(true)
-
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text.trim() }),
-      })
-      const data = await res.json()
-
-      if (data.reply) {
-        setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }])
-      } else {
-        setMessages((prev) => [...prev, { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }])
-      }
-    } catch {
-      setMessages((prev) => [...prev, { role: 'assistant', content: 'Connection error. Please check your internet and try again.' }])
-    }
-
-    setLoading(false)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    send(input)
+  // Helper function for quick prompt buttons
+  const handleQuickPrompt = (text: string) => {
+    if (isLoading) return;
+    sendMessage({ text });
   }
 
   return (
-    <>
-      {/* Floating Button */}
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.button
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-emerald-400 text-black flex items-center justify-center shadow-lg shadow-emerald-400/25 hover:shadow-emerald-400/40 transition-shadow"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      {/* Chat Panel */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] h-[520px] max-h-[calc(100vh-6rem)] rounded-2xl border border-white/10 bg-neutral-950/95 backdrop-blur-xl shadow-2xl flex flex-col overflow-hidden"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="w-9 h-9 rounded-full bg-emerald-400/10 flex items-center justify-center text-emerald-400">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z" />
-                      <path d="M16 14H8a4 4 0 0 0-4 4v2h16v-2a4 4 0 0 0-4-4z" />
-                    </svg>
-                  </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-neutral-950" />
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-white">AI Assistant</div>
-                  <div className="text-[10px] text-emerald-400">Online • Powered by Gemini</div>
-                </div>
-              </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-lg hover:bg-white/5 flex items-center justify-center text-neutral-500 hover:text-white transition-colors"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
+    <div className="fixed bottom-6 right-6 z-50">
+      {isOpen && (
+        <div className="absolute bottom-16 right-0 w-[350px] h-[500px] bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl flex flex-col overflow-hidden">
+          
+          {/* Header */}
+          <div className="bg-zinc-800 p-4 flex items-center justify-between border-b border-zinc-700">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <h3 className="text-white font-semibold text-sm">Med Amine's Assistant AI</h3>
             </div>
+            <button onClick={() => setIsOpen(false)} className="text-zinc-400 hover:text-white transition-colors">
+              <X size={18} />
+            </button>
+          </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 scrollbar-thin">
-              {messages.map((msg, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                      msg.role === 'user'
-                        ? 'bg-emerald-400 text-black rounded-br-md'
-                        : 'bg-white/5 text-neutral-300 border border-white/5 rounded-bl-md'
-                    }`}
+          {/* Messages Area */}
+          <div className="flex-1 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+            {messages.length === 0 && (
+              <div className="text-zinc-400 text-sm text-center mt-8 space-y-4">
+                <p className="text-white font-semibold text-base">👋 Hello! I'm Med Amine's AI Assistant.</p>
+                <p className="text-zinc-500 px-2">
+                  I can help you learn about his FullStack experience, tech stack, and availability for new roles.
+                </p>
+                
+                {/* Interactive Quick Prompts */}
+                <div className="flex flex-col gap-2 mt-6 text-left">
+                  <button 
+                    onClick={() => handleQuickPrompt("Are you available for new opportunities?")}
+                    className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs p-2.5 rounded-lg border border-zinc-700 transition-colors flex items-center gap-2"
                   >
-                    <div className="whitespace-pre-wrap">{msg.content}</div>
-                  </div>
-                </motion.div>
-              ))}
-
-              {/* Typing indicator */}
-              {loading && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex justify-start"
-                >
-                  <div className="bg-white/5 border border-white/5 rounded-2xl rounded-bl-md px-4 py-3 flex gap-1.5">
-                    <span className="w-2 h-2 bg-neutral-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-2 h-2 bg-neutral-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-2 h-2 bg-neutral-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </div>
-                </motion.div>
-              )}
-
-              <div ref={bottomRef} />
-            </div>
-
-            {/* Suggestions (show only at start) */}
-            {messages.length === 1 && !loading && (
-              <div className="px-5 pb-2 flex flex-wrap gap-1.5">
-                {SUGGESTIONS.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => send(s)}
-                    className="px-3 py-1.5 text-[11px] text-neutral-400 bg-white/5 border border-white/5 rounded-full hover:bg-white/10 hover:text-white transition-all"
-                  >
-                    {s}
+                    💼 Are you available for hire?
                   </button>
-                ))}
+                  <button 
+                    onClick={() => handleQuickPrompt("Tell me about your DevOps and Cloud skills")}
+                    className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs p-2.5 rounded-lg border border-zinc-700 transition-colors flex items-center gap-2"
+                  >
+                    ⚙️ Tell me about your FullStack skills
+                  </button>
+                  <button 
+                    onClick={() => handleQuickPrompt("What is your experience with React Native?")}
+                    className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs p-2.5 rounded-lg border border-zinc-700 transition-colors flex items-center gap-2"
+                  >
+                  🚀 Tell me about your projects 
+                  </button>
+                </div>
               </div>
             )}
-
-            {/* Input */}
-            <form
-              onSubmit={handleSubmit}
-              className="px-5 py-4 border-t border-white/5"
-            >
-              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 focus-within:border-white/20 transition-colors">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask me anything..."
-                  disabled={loading}
-                  className="flex-1 bg-transparent text-sm text-white placeholder-neutral-600 outline-none disabled:opacity-50"
-                />
-                <button
-                  type="submit"
-                  disabled={!input.trim() || loading}
-                  className="w-8 h-8 rounded-lg bg-emerald-400 text-black flex items-center justify-center hover:bg-emerald-300 disabled:opacity-30 disabled:hover:bg-emerald-400 transition-all"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13" />
-                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                  </svg>
-                </button>
+            
+            {messages.map((m) => (
+              <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] p-3 rounded-2xl text-sm whitespace-pre-wrap ${
+                  m.role === 'user' 
+                    ? 'bg-blue-600 text-white rounded-br-none' 
+                    : 'bg-zinc-800 text-zinc-100 rounded-bl-none'
+                }`}>
+                  {m.parts.map((part, i) => {
+                    if (part.type === 'text') {
+                      return <span key={i}>{part.text}</span>
+                    }
+                    return null
+                  })}
+                </div>
               </div>
-              <p className="text-[10px] text-neutral-700 mt-2 text-center">
-                AI can make mistakes. Verify important info.
-              </p>
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+            ))}
+            
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-zinc-800 p-3 rounded-2xl text-sm text-zinc-400">
+                  Typing... 
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Area */}
+          <form onSubmit={onSubmit} className="p-3 border-t border-zinc-700 bg-zinc-900 flex items-center gap-2">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask a question..."
+              className="flex-1 bg-zinc-800 text-white text-sm rounded-full px-4 py-2 outline-none border border-zinc-700 focus:border-blue-500 transition-colors"
+            />
+            <button 
+              type="submit" 
+              disabled={isLoading || !input}
+              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white p-2.5 rounded-full transition-colors flex items-center justify-center"
+              aria-label="Send message"
+            >
+              <Send size={18} />
+            </button>
+          </form>
+        </div>
+      )}
+
+      {/* Floating Action Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 active:scale-95"
+        aria-label="Toggle Chat"
+      >
+        {isOpen ? <X size={30} /> : <MessageCircle size={30} />}
+      </button>
+    </div>
   )
 }
