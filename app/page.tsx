@@ -11,7 +11,7 @@ import { ChatWidget } from '@/components/sections/ChatWidget'
 import { Certifications } from '@/components/sections/Certification'
 
 export default function Home() {
-   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [isChatOpen, setIsChatOpen] = useState(true)
 
   return (
     <div className="relative min-h-screen bg-black overflow-x-hidden">
