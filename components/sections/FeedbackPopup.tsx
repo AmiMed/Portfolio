@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Loader2, Send, CheckCircle, Star, X } from 'lucide-react'
@@ -13,44 +13,12 @@ export function FeedbackPopup() {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
-  const showPopup = () => {
-    if (sessionStorage.getItem('feedback_closed') === 'true') return
-    setIsVisible(true)
-    sessionStorage.setItem('feedback_closed', 'true')
-  }
-
-  useEffect(() => {
-    if (sessionStorage.getItem('feedback_closed') === 'true') return
-
-    const timer = setTimeout(() => {
-      showPopup()
-    }, 10000) // 10 seconds
-
-    const handleScroll = () => {
-      const scrolledPast300 = window.scrollY > 300
-      const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
-
-      if (scrolledPast300 || isAtBottom) {
-        showPopup()
-        window.removeEventListener('scroll', handleScroll)
-        clearTimeout(timer)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => {
-      clearTimeout(timer)
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
   const manualOpen = () => {
     setIsVisible(true)
   }
 
   const closePopup = () => {
     setIsVisible(false)
-    sessionStorage.setItem('feedback_closed', 'true')
   }
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -72,7 +40,7 @@ export function FeedbackPopup() {
         setMessage('')
         setTimeout(() => {
           setIsVisible(false)
-          sessionStorage.setItem('feedback_closed', 'true')
+          setIsSuccess(false) // Reset success state for next time
         }, 4000)
       }
     } catch (error) {
