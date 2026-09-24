@@ -32,12 +32,11 @@ const faqs = [
   },
   {
     q: 'Does he have mobile development experience?',
-    a: 'Yes, I have over 5 years of experience shipping React Native (Expo) apps to Google Play, the App Store, and Huawei AppGallery. Check the "Projects" section for the ARVEA Business app.'
+    a: 'Yes, I have over 3 years of experience shipping React Native (Expo) apps to Google Play, the App Store, and Huawei AppGallery. Check the "Projects" section for the ARVEA Business app.'
   },
   {
     q: 'How many years of experience does he have?',
-    a: 'I have been working professionally as a FullStack Developer for over 5 years, primarily with Maison du Web, where I lead development on multiple SaaS and mobile applications.'
-  }
+    a: 'I have over 5 years of professional experience as a Full-Stack Developer, primarily at Maison du Web, where I have worked on the design and development of web and mobile applications.'  }
 ]
 
 export function DocumentationSection() {
