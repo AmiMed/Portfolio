@@ -9,6 +9,7 @@ import { Contact } from '@/components/sections/Contact'
 import { Background, ScrollProgress } from '@/components/Background'
 import { ChatWidget } from '@/components/sections/ChatWidget'
 import { Certifications } from '@/components/sections/Certification'
+import { FeedbackPopup } from '@/components/sections/FeedbackPopup'
 
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false)
@@ -24,6 +25,7 @@ export default function Home() {
         <Projects />
         <Certifications />
         <Contact />
+        <FeedbackPopup />
       <ChatWidget isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
       </div>
     </div>

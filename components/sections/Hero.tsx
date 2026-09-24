@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import { MessageCircle } from 'lucide-react'
+import { Briefcase, Mail, Bot } from 'lucide-react' // Added icons
 import Image from 'next/image'
 
 export function Hero({ onChatOpen }: { onChatOpen: () => void }) {
@@ -39,10 +39,15 @@ export function Hero({ onChatOpen }: { onChatOpen: () => void }) {
         </p>
         <div className="flex gap-4 justify-center flex-wrap">
           <Button size="lg">
-            <a href="#projects">View My Work</a>
+            <a href="#projects" className="flex items-center gap-2">
+              <Briefcase size={18} /> View My Work
+            </a>
           </Button>
+          
           <Button size="lg" variant="outline">
-            <a href="#contact">Contact Me</a>
+            <a href="#contact" className="flex items-center gap-2">
+              <Mail size={18} /> Contact Me
+            </a>
           </Button>
           
           {/* Chat button triggers the prop passed from the parent */}
@@ -50,8 +55,9 @@ export function Hero({ onChatOpen }: { onChatOpen: () => void }) {
             size="lg" 
             variant="secondary"
             onClick={onChatOpen}
+            className="flex items-center gap-2"
           >
-            Ask My Portfolio AI
+            <Bot size={18} /> Ask My AI Assistant
           </Button>
         </div>
       </motion.div>

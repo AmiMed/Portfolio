@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useChat } from '@ai-sdk/react'
-import { MessageCircle, X, Send, Mic, Volume2, VolumeX } from 'lucide-react'
-
+import { motion, AnimatePresence } from 'framer-motion' // Added AnimatePresence for smooth transitions
+import { Bot, X, Send, Mic, Volume2, VolumeX } from 'lucide-react'
 export function ChatWidget({ 
   isOpen, 
   setIsOpen 
@@ -76,11 +76,11 @@ export function ChatWidget({
         const utterance = new SpeechSynthesisUtterance(welcomeText);
         utterance.lang = 'en-US';
         window.speechSynthesis.speak(utterance);
-      }, 500); // Small delay to let the browser load
+      }, 500);
 
       return () => clearTimeout(timer);
     }
-  }, []); // Empty dependency array means this only runs once on mount
+  }, []);
 
   // Stop audio immediately when the user clicks mute
   useEffect(() => {
@@ -114,54 +114,60 @@ export function ChatWidget({
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
+      <AnimatePresence>
       {isOpen && (
-        <div className="absolute bottom-16 right-0 w-[350px] h-[500px] bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl flex flex-col overflow-hidden">
-          
+        <motion.div 
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.9 }}
+          transition={{ duration: 0.2 }}
+          className="absolute bottom-20 right-0 w-[350px] h-[500px] bg-card border border-border rounded-xl shadow-2xl flex flex-col overflow-hidden"
+        >
           {/* Header */}
-          <div className="bg-zinc-800 p-4 flex items-center justify-between border-b border-zinc-700">
+          <div className="bg-muted/50 p-4 flex items-center justify-between border-b border-border">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <h3 className="text-white font-semibold text-sm">Med Amine's AI Assistant</h3>
+              <h3 className="text-foreground font-semibold text-sm">Med Amine's AI Assistant</h3>
             </div>
             <div className="flex items-center gap-2">
               <button 
                 onClick={() => setIsVoiceMode(!isVoiceMode)} 
-                className={`text-zinc-400 hover:text-white transition-colors ${isVoiceMode ? 'text-blue-500' : ''}`}
+                className={`text-muted-foreground hover:text-foreground transition-colors ${isVoiceMode ? 'text-blue-500' : ''}`}
                 title={isVoiceMode ? "Mute AI Voice" : "Unmute AI Voice"}
               >
                 {isVoiceMode ? <Volume2 size={18} /> : <VolumeX size={18} />}
               </button>
-              <button onClick={() => setIsOpen(false)} className="text-zinc-400 hover:text-white transition-colors">
+              <button onClick={() => setIsOpen(false)} className="text-muted-foreground hover:text-foreground transition-colors">
                 <X size={18} />
               </button>
             </div>
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-transparent">
+          <div className="flex-1 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
             {messages.length === 0 && (
-              <div className="text-zinc-400 text-sm text-center mt-8 space-y-4">
-                <p className="text-white font-semibold text-base">👋 Hello! I'm Med Amine's AI Assistant.</p>
-                <p className="text-zinc-500 px-2">
+              <div className="text-muted-foreground text-sm text-center mt-8 space-y-4">
+                <p className="text-foreground font-semibold text-base">👋 Hello! I'm Med Amine's AI Assistant.</p>
+                <p className="text-muted-foreground px-2">
                   I can help you learn about his FullStack experience, tech stack, and availability for new roles.
                 </p>
                 
                 <div className="flex flex-col gap-2 mt-6 text-left">
                   <button 
                     onClick={() => handleQuickPrompt("Are you available for new opportunities?")}
-                    className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs p-2.5 rounded-lg border border-zinc-700 transition-colors flex items-center gap-2"
+                    className="bg-muted hover:bg-muted/70 text-foreground text-xs p-2.5 rounded-lg border border-border transition-colors flex items-center gap-2"
                   >
                     💼 Are you available for hire?
                   </button>
                   <button 
                     onClick={() => handleQuickPrompt("Tell me about your FullStack skills")}
-                    className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs p-2.5 rounded-lg border border-zinc-700 transition-colors flex items-center gap-2"
+                    className="bg-muted hover:bg-muted/70 text-foreground text-xs p-2.5 rounded-lg border border-border transition-colors flex items-center gap-2"
                   >
                     ⚙️ Tell me about your FullStack skills
                   </button>
                   <button 
                     onClick={() => handleQuickPrompt("Tell me about your projects ?")}
-                    className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs p-2.5 rounded-lg border border-zinc-700 transition-colors flex items-center gap-2"
+                    className="bg-muted hover:bg-muted/70 text-foreground text-xs p-2.5 rounded-lg border border-border transition-colors flex items-center gap-2"
                   >
                     🚀 Tell me about your projects 
                   </button>
@@ -173,8 +179,8 @@ export function ChatWidget({
               <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[80%] p-3 rounded-2xl text-sm whitespace-pre-wrap ${
                   m.role === 'user' 
-                    ? 'bg-blue-600 text-white rounded-br-none' 
-                    : 'bg-zinc-800 text-zinc-100 rounded-bl-none'
+                    ? 'bg-primary text-primary-foreground rounded-br-none' 
+                    : 'bg-muted text-foreground rounded-bl-none'
                 }`}>
                   {m.parts.map((part: any, i: number) => {
                     if (part.type === 'text') {
@@ -188,7 +194,7 @@ export function ChatWidget({
             
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-zinc-800 p-3 rounded-2xl text-sm text-zinc-400">
+                <div className="bg-muted p-3 rounded-2xl text-sm text-muted-foreground">
                   Typing... 
                 </div>
               </div>
@@ -197,35 +203,64 @@ export function ChatWidget({
           </div>
 
           {/* Input Area */}
-          <form onSubmit={onSubmit} className="p-3 border-t border-zinc-700 bg-zinc-900 flex items-center gap-2">
+          <form onSubmit={onSubmit} className="p-3 border-t border-border bg-card flex items-center gap-2">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1 bg-zinc-800 text-white text-sm rounded-full px-4 py-2 outline-none border border-zinc-700 focus:border-blue-500 transition-colors"
+              className="flex-1 bg-background text-foreground text-sm rounded-full px-4 py-2 outline-none border border-border focus:border-primary transition-colors"
             />
-
             <button 
               type="submit" 
               disabled={isLoading || !input}
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white p-2.5 rounded-full transition-colors flex items-center justify-center"
+              className="bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground p-2.5 rounded-full transition-colors flex items-center justify-center"
               aria-label="Send message"
             >
               <Send size={18} />
             </button>
           </form>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
-      {/* Floating Action Button */}
-      <button
+           {/* Floating Action Button with Text & Animations */}
+      <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-blue-600 hover:bg-blue-700 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 active:scale-95"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={isOpen ? { 
+          scale: 1, 
+          opacity: 1 
+        } : { 
+          scale: 1, 
+          opacity: 1,
+          boxShadow: [
+            '0 0 0 0px rgba(37, 99, 235, 0.5)', 
+            '0 0 0 12px rgba(37, 99, 235, 0)'
+          ] // Blue radar pulse when closed
+        }}
+        transition={{ 
+          scale: { type: 'spring', stiffness: 200 },
+          opacity: { duration: 0.2 },
+          boxShadow: { duration: 2, repeat: Infinity, ease: 'easeOut' }
+        }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="group flex items-center bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg transition-colors duration-300"
         aria-label="Toggle Chat"
       >
-        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
-      </button>
+        {isOpen ? (
+          <X className="shrink-0" size={27} />
+        ) : (
+          <>
+            {/* Replaced MessageCircle with Bot icon */}
+            <Bot className="shrink-0" size={27} />
+            <span className="max-w-0 group-hover:max-w-[250px] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out whitespace-nowrap overflow-hidden font-medium text-sm pl-0 group-hover:pl-2">
+              Med Amine's AI Assistant
+            </span>
+          </>
+        )}
+      </motion.button>
     </div>
   )
 }
