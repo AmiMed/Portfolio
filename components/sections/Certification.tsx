@@ -212,7 +212,17 @@ function CertificationCard({
       transition={{ delay: 0.1 + index * 0.05, duration: 0.5 }}
       onHoverStart={onHoverStart}
       onHoverEnd={onHoverEnd}
-      className="group relative rounded-xl border border-white/5 hover:border-white/15 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300 overflow-hidden flex flex-col h-full"
+      
+      // ADDED: Tactile lift effect to match your Project cards
+      whileHover={{ 
+        scale: 1.02, 
+        y: -5,
+        zIndex: 10,
+        transition: { duration: 0.2, ease: 'easeOut' }
+      }}
+      
+      // UPDATED: Border changes to blue on hover, removed transition-all
+      className="group relative rounded-xl border border-white/5 hover:border-blue-400/50 bg-white/[0.02] hover:bg-white/[0.04] transition-colors duration-300 overflow-hidden flex flex-col h-full"
     >
       {/* Provider Badge */}
       <div className="p-5 pb-3">
@@ -248,19 +258,14 @@ function CertificationCard({
         </div>
       </div>
 
-      {/* Action Button */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-        transition={{ duration: 0.2 }}
-        className="p-5 pt-0"
-      >
+      {/* Action Button - NOW ALWAYS VISIBLE & PUSHED TO BOTTOM */}
+      <div className="p-5 pt-0 mt-auto">
         <a
           href={cert.certificateUrl}
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => {
-            if (cert.certificateUrl === '#') {
+            if (!cert.certificateUrl || cert.certificateUrl === '#') {
               e.preventDefault()
             }
           }}
@@ -269,7 +274,7 @@ function CertificationCard({
           <CertificateIcon size={14} />
           View Certificate
         </a>
-      </motion.div>
+      </div>
 
       {/* Bottom border glow on hover */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
