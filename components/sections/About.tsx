@@ -78,7 +78,7 @@ export function About() {
             About Me
           </span>
           <span className="flex-1 h-px bg-white/10" />
-          <span className="text-xs font-medium text-neutral-600">02</span>
+          <span className="text-xs font-medium text-neutral-600">01</span>
         </motion.div>
 
         {/* Main Content - Two Columns */}

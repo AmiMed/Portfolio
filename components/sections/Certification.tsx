@@ -66,7 +66,7 @@ export function Certifications() {
             Certifications
           </span>
           <span className="flex-1 h-px bg-white/10" />
-          <span className="text-xs font-medium text-neutral-600">{certifications.length}</span>
+          <span className="text-xs font-medium text-neutral-600">03</span>
         </motion.div>
 
         {/* Header */}

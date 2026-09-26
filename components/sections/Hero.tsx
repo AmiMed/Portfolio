@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import { Briefcase, Mail, Bot } from 'lucide-react' // Added icons
+import { Briefcase, Mail, Bot } from 'lucide-react'
 import Image from 'next/image'
 
 export function Hero({ onChatOpen }: { onChatOpen: () => void }) {
@@ -31,9 +31,25 @@ export function Hero({ onChatOpen }: { onChatOpen: () => void }) {
           />
         </motion.div>
 
+        {/* NEW: Availability Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 border border-white/10 bg-white/5 backdrop-blur-sm rounded-full">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span className="text-xs font-medium text-neutral-300 uppercase tracking-wider">
+            Available for new opportunities
+          </span>
+        </div>
+
+        {/* MODIFIED: Title with gradient color on the name */}
         <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
-          Hi, I'm BOUTITI MED AMINE
+          Hi, I'm{' '}
+          <span className="bg-gradient-to-r from-emerald-400 via-emerald-300 to-blue-500 bg-clip-text text-transparent">
+            BOUTITI MED AMINE
+          </span>
         </h1>
+
         <p className="text-xl text-muted-foreground mb-8">
           Software Engineer & Full Stack Developer
         </p>
