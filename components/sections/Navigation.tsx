@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'framer-motion'
 
 const navLinks = [
   { name: 'Home', href: '#home' },
@@ -12,18 +12,50 @@ const navLinks = [
   { name: 'Contact', href: '#contact' },
 ]
 
+const logoText = "⚡ Build__Scale__Innovate".split("");
+
+// === Composant pour animer la couleur de chaque lettre ===
+function LogoChar({ char, index, total, progress }: { char: string; index: number; total: number; progress: any }) {
+  const start = (index / total) * 0.85;
+  const end = start + 0.15;
+
+  // MODIFICATION ICI : Démarre en blanc (#ffffff) et finit en émeraude (#34d399)
+  const color = useTransform(progress, [start, end], ["#ffffff", "#34d399"]);
+
+  return (
+    <motion.span
+      style={{ color }}
+      className="inline-block"
+      variants={{
+        hidden: { opacity: 0, y: -20 },
+        visible: { opacity: 1, y: 0 },
+        hover: { y: -4 } // On garde le mouvement vers le haut au survol
+      }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
+      {char}
+    </motion.span>
+  );
+}
+
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [isInitialLoad, setIsInitialLoad] = useState(true)
-  const logoText = "⚡ Build__Scale__Innovate".split("");
+
+  // --- Scroll Progress Hook ---
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   // Handle initial load with hash in URL
   useEffect(() => {
     const hash = window.location.hash.replace('#', '')
     if (hash) {
-      // Wait for DOM to be ready
       const timer = setTimeout(() => {
         const element = document.getElementById(hash)
         if (element) {
@@ -43,10 +75,8 @@ export function Navigation() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
 
-      // Skip hash update during initial load to avoid conflicts
       if (isInitialLoad) return
 
-      // Detect active section
       const sections = navLinks.map((link) => link.href.replace('#', ''))
       let newActiveSection = 'home'
       
@@ -62,7 +92,6 @@ export function Navigation() {
 
       setActiveSection(newActiveSection)
 
-      // Update URL hash without triggering scroll
       if (window.location.hash !== `#${newActiveSection}`) {
         window.history.replaceState(null, '', `#${newActiveSection}`)
       }
@@ -106,7 +135,6 @@ export function Navigation() {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
       setActiveSection(id)
-      // Update URL hash
       window.history.pushState(null, '', href)
     }
     setIsOpen(false)
@@ -127,51 +155,47 @@ export function Navigation() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
         
-<motion.a
-  href="#home"
-  onClick={(e) => {
-    e.preventDefault();
-    scrollToSection('#home');
-  }}
-  className="relative group inline-block"
-  initial="hidden"
-  animate="visible"
-  transition={{ staggerChildren: 0.05, delayChildren: 0.2 }} // Stagger timing
-  whileHover="hover"
-  whileTap={{ scale: 0.95 }}
->
-  <span className="text-xl font-bold tracking-tight text-white flex">
-    {logoText.map((char, index) => (
-      <motion.span
-        key={index}
-        variants={{
-          hidden: { opacity: 0, y: -20 }, // Start up and invisible
-          visible: { opacity: 1, y: 0 },   // Drop down on load
-          hover: { y: -4, color: "#34d399" } // Wave on hover
-        }}
-        transition={{ type: "spring", stiffness: 300 }}
-      >
-        {char}
-      </motion.span>
-    ))}
-    <motion.span
-      className="text-emerald-400"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1, scale: [1, 1.4, 1] }}
-      transition={{ delay: 0.8, duration: 1.5, repeat: Infinity }}
-    >
-      .
-    </motion.span>
-  </span>
+            {/* === LOGO AVEC TEXTE COLORÉ PROGRESSIVEMENT === */}
+            <motion.a
+              href="#home"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('#home');
+              }}
+              className="relative group inline-block"
+              initial="hidden"
+              animate="visible"
+              transition={{ staggerChildren: 0.05, delayChildren: 0.2 }}
+              whileHover="hover"
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="text-xl font-bold tracking-tight flex">
+                {logoText.map((char, index) => (
+                  <LogoChar 
+                    key={index} 
+                    char={char} 
+                    index={index} 
+                    total={logoText.length} 
+                    progress={scaleX}
+                  />
+                ))}
+                <motion.span
+                  className="text-emerald-400 inline-block"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, scale: [1, 1.4, 1] }}
+                  transition={{ delay: 0.8, duration: 1.5, repeat: Infinity }}
+                >
+                  .
+                </motion.span>
+              </span>
 
-  {/* Underline draws in after letters finish */}
-  <motion.span
-    className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-emerald-400 to-blue-500 origin-left"
-    initial={{ scaleX: 0 }}
-    animate={{ scaleX: 1 }}
-    transition={{ duration: 0.4, delay: 0.8, ease: "easeOut" }}
-  />
-</motion.a>
+              {/* Ligne en dessous du logo qui agit comme barre de progression */}
+              <motion.span
+                style={{ scaleX }}
+                className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-emerald-400 to-blue-500 origin-left"
+              />
+            </motion.a>
+
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link, index) => {
