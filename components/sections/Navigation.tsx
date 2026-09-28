@@ -17,6 +17,7 @@ export function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [isInitialLoad, setIsInitialLoad] = useState(true)
+  const logoText = "My__Portfolio".split("");
 
   // Handle initial load with hash in URL
   useEffect(() => {
@@ -125,24 +126,52 @@ export function Navigation() {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <motion.a
-              href="#home"
-              onClick={(e) => {
-                e.preventDefault()
-                scrollToSection('#home')
-              }}
-              className="relative group"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span className="text-xl font-bold tracking-tight text-white">
-                Boutiti Med Amine _ Portfolio
-                <span className="text-emerald-400">.</span>
-              </span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-emerald-400 to-blue-500 group-hover:w-full transition-all duration-300" />
-            </motion.a>
+        
+<motion.a
+  href="#home"
+  onClick={(e) => {
+    e.preventDefault();
+    scrollToSection('#home');
+  }}
+  className="relative group inline-block"
+  initial="hidden"
+  animate="visible"
+  transition={{ staggerChildren: 0.05, delayChildren: 0.2 }} // Stagger timing
+  whileHover="hover"
+  whileTap={{ scale: 0.95 }}
+>
+  <span className="text-xl font-bold tracking-tight text-white flex">
+    {logoText.map((char, index) => (
+      <motion.span
+        key={index}
+        variants={{
+          hidden: { opacity: 0, y: -20 }, // Start up and invisible
+          visible: { opacity: 1, y: 0 },   // Drop down on load
+          hover: { y: -4, color: "#34d399" } // Wave on hover
+        }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        {char}
+      </motion.span>
+    ))}
+    <motion.span
+      className="text-emerald-400"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, scale: [1, 1.4, 1] }}
+      transition={{ delay: 0.8, duration: 1.5, repeat: Infinity }}
+    >
+      .
+    </motion.span>
+  </span>
 
+  {/* Underline draws in after letters finish */}
+  <motion.span
+    className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-emerald-400 to-blue-500 origin-left"
+    initial={{ scaleX: 0 }}
+    animate={{ scaleX: 1 }}
+    transition={{ duration: 0.4, delay: 0.8, ease: "easeOut" }}
+  />
+</motion.a>
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link, index) => {
