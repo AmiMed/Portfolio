@@ -17,7 +17,7 @@ export function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [isInitialLoad, setIsInitialLoad] = useState(true)
-  const logoText = "My__Portfolio".split("");
+  const logoText = "⚡ Build__Scale__Innovate".split("");
 
   // Handle initial load with hash in URL
   useEffect(() => {
