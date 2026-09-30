@@ -59,24 +59,7 @@ export function Preloader() {
         </motion.span>
       </motion.div>
 
-      {/* Barre de progression au lieu du texte "Loading..." */}
-      <div className="mt-8 w-48 h-0.5 bg-white/10 rounded-full overflow-hidden">
-        <motion.div
-          className="h-full bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full"
-          initial={{ width: "0%" }}
-          animate={{ width: "100%" }}
-          transition={{ duration: 2.2, ease: "easeInOut" }}
-        />
-      </div>
-      
-      <motion.p
-        className="text-[10px] text-neutral-500 mt-3 uppercase tracking-widest"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-      >
-        Loading...
-      </motion.p>
+     
     </motion.div>
   )
 }
