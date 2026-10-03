@@ -340,6 +340,11 @@ export function Navigation() {
 
                 <div className="my-6 border-t border-white/10" />
 
+                {/* === NOUVEAU : Sélecteur de langue pour mobile === */}
+                <div className="mb-6">
+                  <LanguageToggle />
+                </div>
+
                 <div className="mt-auto pb-8">
                   <div className="flex items-center gap-3 text-sm text-neutral-500">
                     <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
