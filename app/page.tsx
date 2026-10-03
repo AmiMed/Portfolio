@@ -14,6 +14,7 @@ import { Certifications } from '@/components/sections/Certification'
 import { FeedbackPopup } from '@/components/sections/FeedbackPopup'
 import { DocumentationSection } from '@/components/sections/DocumentationSection'
 import { Preloader } from '@/components/Preloader'
+import { AutoResumePopup } from '@/components/sections/AutoResumePopup'
 
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false)
@@ -45,6 +46,7 @@ export default function Home() {
             <Certifications />
             <DocumentationSection /> 
             <Contact />
+            <AutoResumePopup />
             <FeedbackPopup />
             <ChatWidget isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
           </div>

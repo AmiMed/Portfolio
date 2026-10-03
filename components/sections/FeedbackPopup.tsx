@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Loader2, Send, CheckCircle, Star, X } from 'lucide-react'
-import { useLanguage } from '@/context/LanguageContext' // <-- Import ajouté
+import { useLanguage } from '@/context/LanguageContext'
 
 export function FeedbackPopup() {
-  const { t } = useLanguage() // <-- Hook ajouté
+  const { t } = useLanguage()
   
   const [isVisible, setIsVisible] = useState(false)
   const [rating, setRating] = useState(0)
@@ -16,13 +16,8 @@ export function FeedbackPopup() {
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
-  const manualOpen = () => {
-    setIsVisible(true)
-  }
-
-  const closePopup = () => {
-    setIsVisible(false)
-  }
+  const manualOpen = () => { setIsVisible(true) }
+  const closePopup = () => { setIsVisible(false) }
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -58,7 +53,6 @@ export function FeedbackPopup() {
       <AnimatePresence>
         {isVisible && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            {/* Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -66,8 +60,6 @@ export function FeedbackPopup() {
               className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               onClick={closePopup}
             />
-
-            {/* Modal Box */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -76,32 +68,22 @@ export function FeedbackPopup() {
               className="relative bg-card border border-border rounded-2xl p-8 shadow-2xl w-full max-w-md"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
-              <button
-                onClick={closePopup}
-                className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Close feedback"
-              >
+              <button onClick={closePopup} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors" aria-label="Close feedback">
                 <X size={20} />
               </button>
 
-              {/* Success State */}
               {isSuccess ? (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
                   <CheckCircle className="w-12 h-12 text-emerald-500 mb-4" />
-                  <h3 className="text-xl font-semibold text-foreground">{t.feedback.successTitle}</h3> {/* <-- Traduit */}
-                  <p className="text-muted-foreground">{t.feedback.successDesc}</p> {/* <-- Traduit */}
+                  <h3 className="text-xl font-semibold text-foreground">{t.feedback.successTitle}</h3>
+                  <p className="text-muted-foreground">{t.feedback.successDesc}</p>
                 </div>
               ) : (
                 <form onSubmit={onSubmit} className="space-y-6">
                   <div className="text-center mb-4">
-                    <h2 className="text-2xl font-bold text-foreground mb-2">{t.feedback.title}</h2> {/* <-- Traduit */}
-                    <p className="text-sm text-muted-foreground">
-                      {t.feedback.desc} {/* <-- Traduit */}
-                    </p>
+                    <h2 className="text-2xl font-bold text-foreground mb-2">{t.feedback.title}</h2>
+                    <p className="text-sm text-muted-foreground">{t.feedback.desc}</p>
                   </div>
-
-                  {/* Star Rating */}
                   <div className="flex justify-center gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
@@ -113,18 +95,10 @@ export function FeedbackPopup() {
                         className="transition-transform hover:scale-110 focus:outline-none"
                         aria-label={`${star} stars`}
                       >
-                        <Star
-                          className={`w-10 h-10 transition-colors ${
-                            (hoverRating || rating) >= star
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-muted-foreground/40'
-                          }`}
-                        />
+                        <Star className={`w-10 h-10 transition-colors ${(hoverRating || rating) >= star ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground/40'}`} />
                       </button>
                     ))}
                   </div>
-
-                  {/* Message */}
                   <div>
                     <textarea
                       required
@@ -132,23 +106,15 @@ export function FeedbackPopup() {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-ring resize-none"
-                      placeholder={t.feedback.placeholder} // <-- Traduit
+                      placeholder={t.feedback.placeholder}
                     />
                   </div>
-
-                  {/* Submit */}
                   <div className="flex justify-center">
                     <Button type="submit" size="lg" disabled={isLoading || rating === 0 || !message.trim()}>
                       {isLoading ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          {t.feedback.sending} {/* <-- Traduit */}
-                        </>
+                        <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t.feedback.sending}</>
                       ) : (
-                        <>
-                          <Send className="mr-2 h-4 w-4" />
-                          {t.feedback.submit} {/* <-- Traduit */}
-                        </>
+                        <><Send className="mr-2 h-4 w-4" />{t.feedback.submit}</>
                       )}
                     </Button>
                   </div>
@@ -159,7 +125,7 @@ export function FeedbackPopup() {
         )}
       </AnimatePresence>
 
-      {/* Floating Action Button with Text & Animations */}
+      {/* Bouton flottant identique au ChatWidget */}
       {!isVisible && (
         <motion.button
           initial={{ scale: 0, opacity: 0 }}
@@ -179,13 +145,12 @@ export function FeedbackPopup() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={manualOpen}
-          className="group fixed bottom-24 right-6 z-40 flex items-center bg-yellow-400 hover:bg-yellow-500 text-black py-3 px-3 rounded-full shadow-lg transition-colors duration-300"
+          className="group fixed bottom-24 right-6 z-40 flex items-center bg-yellow-400 hover:bg-yellow-500 text-black p-4 rounded-full shadow-lg transition-colors duration-300"
           aria-label="Open Feedback"
         >
-          <Star className="fill-black shrink-0" size={30} />
-          {/* Expanding Text on Hover */}
-          <span className="max-w-0 group-hover:max-w-[150px] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out whitespace-nowrap overflow-hidden font-medium text-sm pl-0 group-hover:pl-2">
-            {t.feedback.fabText} {/* <-- Traduit */}
+          <Star className="fill-black shrink-0" size={27} />
+          <span className="max-w-0 group-hover:max-w-[200px] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out whitespace-nowrap overflow-hidden font-medium text-sm pl-0 group-hover:pl-2">
+            {t.feedback.fabText}
           </span>
         </motion.button>
       )}

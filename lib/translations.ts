@@ -198,7 +198,19 @@ feedback: {
   submit: 'Send Feedback',
   fabText: 'Send Feedback'
 },
-
+autoResume: {
+  title: 'AI Resume Generator',
+  desc: 'Enter your email and the job title. My AI will instantly generate and send a tailored summary of my career directly to your inbox.',
+  emailPlaceholder: 'Your Email *',
+  jobPlaceholder: 'Job Title (e.g., Senior React Developer) *',
+  companyPlaceholder: 'Company Name (Optional)',
+  generating: 'Generating & Sending...',
+  successTitle: 'Sent Successfully!',
+  successDesc: 'Check your inbox for my tailored resume.',
+  error: 'Failed to send. Try again.',
+  submit: 'Generate & Send Resume',
+  fabText: 'Get My Resume'
+},
   },
   fr: {
     nav: {
@@ -397,9 +409,21 @@ feedback: {
   sending: 'Envoi...',
   submit: 'Envoyer le commentaire',
   fabText: 'Envoyer le commentaire'
+},
+  autoResume: {
+  title: 'Générateur de CV par IA',
+  desc: 'Entrez votre email et le titre du poste. Mon IA générera et enverra instantanément un résumé sur-mesure de mon parcours directement dans votre boîte mail.',
+  emailPlaceholder: 'Votre Email *',
+  jobPlaceholder: 'Titre du poste (ex: Développeur React Senior) *',
+  companyPlaceholder: 'Nom de l\'entreprise (Optionnel)',
+  generating: 'Génération & Envoi...',
+  successTitle: 'Envoyé avec succès !',
+  successDesc: 'Vérifiez votre boîte de réception pour recevoir mon CV personnalisé.',
+  error: 'Échec de l\'envoi. Réessayez.',
+  submit: 'Générer & Envoyer le CV',
+  fabText: 'Obtenir mon CV'
 }
   },
-  
 };
 
 export type Lang = 'en' | 'fr';
