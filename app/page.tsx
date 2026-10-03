@@ -1,3 +1,4 @@
+// app/page.tsx
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -12,30 +13,26 @@ import { ChatWidget } from '@/components/sections/ChatWidget'
 import { Certifications } from '@/components/sections/Certification'
 import { FeedbackPopup } from '@/components/sections/FeedbackPopup'
 import { DocumentationSection } from '@/components/sections/DocumentationSection'
-import { Preloader } from '@/components/Preloader' 
+import { Preloader } from '@/components/Preloader'
 
 export default function Home() {
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-
     const timer = setTimeout(() => {
       setIsLoading(false)
     }, 2500)
-
     return () => clearTimeout(timer)
   }, [])
 
   return (
+    // Plus de LanguageProvider ici
     <div className="relative min-h-screen bg-black overflow-x-hidden">
-      {/* Le AnimatePresence gère la disparition en douceur du loader */}
       <AnimatePresence mode="wait">
         {isLoading && <Preloader key="preloader" />}
       </AnimatePresence>
 
-      {/* Le contenu de votre portfolio reste monté en arrière-plan */}
-      {/* et apparaîtra naturellement quand le loader disparaîtra */}
       {!isLoading && (
         <>
           <ScrollProgress />

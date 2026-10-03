@@ -4,8 +4,11 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Loader2, Send, CheckCircle, Star, X } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext' // <-- Import ajouté
 
 export function FeedbackPopup() {
+  const { t } = useLanguage() // <-- Hook ajouté
+  
   const [isVisible, setIsVisible] = useState(false)
   const [rating, setRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
@@ -40,7 +43,7 @@ export function FeedbackPopup() {
         setMessage('')
         setTimeout(() => {
           setIsVisible(false)
-          setIsSuccess(false) // Reset success state for next time
+          setIsSuccess(false)
         }, 4000)
       }
     } catch (error) {
@@ -86,15 +89,15 @@ export function FeedbackPopup() {
               {isSuccess ? (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
                   <CheckCircle className="w-12 h-12 text-emerald-500 mb-4" />
-                  <h3 className="text-xl font-semibold text-foreground">Thank You!</h3>
-                  <p className="text-muted-foreground">Your feedback has been sent successfully.</p>
+                  <h3 className="text-xl font-semibold text-foreground">{t.feedback.successTitle}</h3> {/* <-- Traduit */}
+                  <p className="text-muted-foreground">{t.feedback.successDesc}</p> {/* <-- Traduit */}
                 </div>
               ) : (
                 <form onSubmit={onSubmit} className="space-y-6">
                   <div className="text-center mb-4">
-                    <h2 className="text-2xl font-bold text-foreground mb-2">Leave a Rating</h2>
+                    <h2 className="text-2xl font-bold text-foreground mb-2">{t.feedback.title}</h2> {/* <-- Traduit */}
                     <p className="text-sm text-muted-foreground">
-                      How would you rate my portfolio? Let me know your thoughts!
+                      {t.feedback.desc} {/* <-- Traduit */}
                     </p>
                   </div>
 
@@ -129,7 +132,7 @@ export function FeedbackPopup() {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       className="w-full px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-ring resize-none"
-                      placeholder="Tell me what you think..."
+                      placeholder={t.feedback.placeholder} // <-- Traduit
                     />
                   </div>
 
@@ -139,12 +142,12 @@ export function FeedbackPopup() {
                       {isLoading ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Sending...
+                          {t.feedback.sending} {/* <-- Traduit */}
                         </>
                       ) : (
                         <>
                           <Send className="mr-2 h-4 w-4" />
-                          Send Feedback
+                          {t.feedback.submit} {/* <-- Traduit */}
                         </>
                       )}
                     </Button>
@@ -182,7 +185,7 @@ export function FeedbackPopup() {
           <Star className="fill-black shrink-0" size={30} />
           {/* Expanding Text on Hover */}
           <span className="max-w-0 group-hover:max-w-[150px] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out whitespace-nowrap overflow-hidden font-medium text-sm pl-0 group-hover:pl-2">
-            Send Feedback
+            {t.feedback.fabText} {/* <-- Traduit */}
           </span>
         </motion.button>
       )}

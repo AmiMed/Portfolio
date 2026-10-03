@@ -1,14 +1,18 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { X } from 'lucide-react' // Make sure to install lucide-react if you haven't
+import { X } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext' // <-- Import ajouté
+import { type Project } from '@/data/projects' // <-- Pour un meilleur typage
 
 interface ProjectDetailsModalProps {
-  project: any // Replace with your Project type
+  project: Project // <-- Remplacé 'any' par le type Project
   onClose: () => void
 }
 
 export function ProjectDetailsModal({ project, onClose }: ProjectDetailsModalProps) {
+  const { t } = useLanguage() // <-- Hook ajouté
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -16,7 +20,7 @@ export function ProjectDetailsModal({ project, onClose }: ProjectDetailsModalPro
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-      onClick={onClose} // Click outside to close
+      onClick={onClose}
     >
       <motion.div
         initial={{ opacity: 0, y: 40, scale: 0.95 }}
@@ -24,7 +28,7 @@ export function ProjectDetailsModal({ project, onClose }: ProjectDetailsModalPro
         exit={{ opacity: 0, y: 40, scale: 0.95 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-neutral-900 border border-white/10 rounded-2xl shadow-2xl"
-        onClick={(e) => e.stopPropagation()} // Prevent clicks inside modal from closing it
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
@@ -66,9 +70,11 @@ export function ProjectDetailsModal({ project, onClose }: ProjectDetailsModalPro
             {project.longDescription || project.description}
           </p>
 
-          {/* Key Features (Example of extra details) */}
+          {/* Key Features */}
           <div className="mb-8">
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Key Features</h3>
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+              {t.modal.keyFeatures} {/* <-- Texte traduit */}
+            </h3>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {project.features?.map((feature: string, i: number) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-neutral-300">
@@ -88,7 +94,7 @@ export function ProjectDetailsModal({ project, onClose }: ProjectDetailsModalPro
                 rel="noopener noreferrer"
                 className="flex-1 text-center py-3 px-4 bg-white text-black rounded-lg font-medium text-sm hover:bg-neutral-200 transition-colors"
               >
-                View Live Site
+                {t.modal.viewLive} {/* <-- Texte traduit */}
               </a>
             )}
             {project.links?.github && (
@@ -98,7 +104,7 @@ export function ProjectDetailsModal({ project, onClose }: ProjectDetailsModalPro
                 rel="noopener noreferrer"
                 className="flex-1 text-center py-3 px-4 bg-white/10 border border-white/10 text-white rounded-lg font-medium text-sm hover:bg-white/20 transition-colors"
               >
-                View Source Code
+                {t.modal.viewCode} {/* <-- Texte traduit */}
               </a>
             )}
           </div>

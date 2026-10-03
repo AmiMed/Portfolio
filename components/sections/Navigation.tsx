@@ -2,25 +2,31 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
+import { LanguageToggle } from '@/components/LanguageToggle'
 
-const navLinks = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Certifications', href: '#certifications' },
-  { name: 'Documentation', href: '#docs' }, 
-  { name: 'Contact', href: '#contact' },
-]
+// Static section IDs: they never change with the language
+const sectionIds = ['home', 'about', 'projects', 'certifications', 'docs', 'contact']
 
-const logoText = "⚡ Build__Scale__Innovate".split("");
+const logoText = '⚡ Build__Scale__Innovate'.split('')
 
 // === Composant pour animer la couleur de chaque lettre ===
-function LogoChar({ char, index, total, progress }: { char: string; index: number; total: number; progress: any }) {
-  const start = (index / total) * 0.85;
-  const end = start + 0.15;
+function LogoChar({
+  char,
+  index,
+  total,
+  progress,
+}: {
+  char: string
+  index: number
+  total: number
+  progress: any
+}) {
+  const start = (index / total) * 0.85
+  const end = start + 0.15
 
-  // MODIFICATION ICI : Démarre en blanc (#ffffff) et finit en émeraude (#34d399)
-  const color = useTransform(progress, [start, end], ["#ffffff", "#34d399"]);
+  // Démarre en blanc (#ffffff) et finit en émeraude (#34d399)
+  const color = useTransform(progress, [start, end], ['#ffffff', '#34d399'])
 
   return (
     <motion.span
@@ -29,28 +35,41 @@ function LogoChar({ char, index, total, progress }: { char: string; index: numbe
       variants={{
         hidden: { opacity: 0, y: -20 },
         visible: { opacity: 1, y: 0 },
-        hover: { y: -4 } // On garde le mouvement vers le haut au survol
+        hover: { y: -4 },
       }}
-      transition={{ type: "spring", stiffness: 300 }}
+      transition={{ type: 'spring', stiffness: 300 }}
     >
       {char}
     </motion.span>
-  );
+  )
 }
 
 export function Navigation() {
+  // ✅ Hook called inside the component
+  const { t } = useLanguage()
+
+  // ✅ navLinks built inside the component so it reacts to language changes
+  const navLinks = [
+    { name: t.nav.home, href: '#home' },
+    { name: t.nav.about, href: '#about' },
+    { name: t.nav.projects, href: '#projects' },
+    { name: t.nav.certifications, href: '#certifications' },
+    { name: t.nav.docs, href: '#docs' },
+    { name: t.nav.contact, href: '#contact' },
+  ]
+
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [isInitialLoad, setIsInitialLoad] = useState(true)
 
   // --- Scroll Progress Hook ---
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
-  });
+    restDelta: 0.001,
+  })
 
   // Handle initial load with hash in URL
   useEffect(() => {
@@ -77,10 +96,9 @@ export function Navigation() {
 
       if (isInitialLoad) return
 
-      const sections = navLinks.map((link) => link.href.replace('#', ''))
       let newActiveSection = 'home'
-      
-      for (const section of sections) {
+
+      for (const section of sectionIds) {
         const element = document.getElementById(section)
         if (element) {
           const rect = element.getBoundingClientRect()
@@ -154,13 +172,12 @@ export function Navigation() {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-        
             {/* === LOGO AVEC TEXTE COLORÉ PROGRESSIVEMENT === */}
             <motion.a
               href="#home"
               onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('#home');
+                e.preventDefault()
+                scrollToSection('#home')
               }}
               className="relative group inline-block"
               initial="hidden"
@@ -171,11 +188,11 @@ export function Navigation() {
             >
               <span className="text-xl font-bold tracking-tight flex">
                 {logoText.map((char, index) => (
-                  <LogoChar 
-                    key={index} 
-                    char={char} 
-                    index={index} 
-                    total={logoText.length} 
+                  <LogoChar
+                    key={index}
+                    char={char}
+                    index={index}
+                    total={logoText.length}
                     progress={scaleX}
                   />
                 ))}
@@ -202,7 +219,7 @@ export function Navigation() {
                 const isActive = activeSection === link.href.replace('#', '')
                 return (
                   <motion.a
-                    key={link.name}
+                    key={link.href}
                     href={link.href}
                     onClick={(e) => {
                       e.preventDefault()
@@ -228,6 +245,9 @@ export function Navigation() {
                   </motion.a>
                 )
               })}
+              <div className="ml-4">
+                <LanguageToggle />
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -294,7 +314,7 @@ export function Navigation() {
                     const isActive = activeSection === link.href.replace('#', '')
                     return (
                       <motion.a
-                        key={link.name}
+                        key={link.href}
                         href={link.href}
                         onClick={(e) => {
                           e.preventDefault()

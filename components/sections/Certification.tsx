@@ -3,12 +3,14 @@
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { certifications, type Certification, getAllCertificationTags, getAllProviders } from '@/data/Certifications'
+import { useLanguage } from '@/context/LanguageContext'
 
 type FilterMode = 'all' | 'tag' | 'provider'
 
 export function Certifications() {
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
+  const { t, lang } = useLanguage() // <-- Hook ajouté
   
   const [filterMode, setFilterMode] = useState<FilterMode>('all')
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
@@ -44,6 +46,11 @@ export function Certifications() {
     setSelectedProvider(null)
   }
 
+  // Fonction pour traduire les tags à l'affichage
+  const translateTag = (tag: string) => {
+    return lang === 'fr' ? (t.certifications.tags[tag as keyof typeof t.certifications.tags] || tag) : tag
+  }
+
   return (
     <section
       id="certifications"
@@ -63,7 +70,7 @@ export function Certifications() {
           className="flex items-center gap-3 mb-6"
         >
           <span className="text-xs font-medium uppercase tracking-[0.1em] text-neutral-500">
-            Certifications
+            {t.certifications.label} {/* <-- Traduit */}
           </span>
           <span className="flex-1 h-px bg-white/10" />
           <span className="text-xs font-medium text-neutral-600">03</span>
@@ -77,13 +84,13 @@ export function Certifications() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-white leading-tight">
-              Professional{' '}
+              {t.certifications.headingStart}{' '} {/* <-- Traduit */}
               <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                Certifications
+                {t.certifications.headingHighlight} {/* <-- Traduit */}
               </span>
             </h2>
             <p className="mt-4 text-neutral-400 text-base max-w-lg">
-              Industry-recognized certifications across cloud, AI, DevOps, and agile methodologies.
+              {t.certifications.description} {/* <-- Traduit */}
             </p>
           </motion.div>
         </div>
@@ -97,7 +104,7 @@ export function Certifications() {
         >
           {/* Filter by Technology Tags */}
           <div className="mb-6">
-            <h3 className="text-sm font-medium text-neutral-300 mb-3">Filter by Technology</h3>
+            <h3 className="text-sm font-medium text-neutral-300 mb-3">{t.certifications.filterTech}</h3> {/* <-- Traduit */}
             <div className="flex flex-wrap gap-2">
               {allTags.map((tag) => (
                 <button
@@ -109,7 +116,7 @@ export function Certifications() {
                       : 'bg-white/5 text-neutral-400 border border-white/10 hover:border-blue-500/30 hover:text-neutral-300'
                   }`}
                 >
-                  {tag}
+                  {translateTag(tag)} {/* <-- Tag traduit ici */}
                 </button>
               ))}
             </div>
@@ -117,7 +124,7 @@ export function Certifications() {
 
           {/* Filter by Provider/Source */}
           <div className="mb-4">
-            <h3 className="text-sm font-medium text-neutral-300 mb-3">Filter by Source</h3>
+            <h3 className="text-sm font-medium text-neutral-300 mb-3">{t.certifications.filterSource}</h3> {/* <-- Traduit */}
             <div className="flex flex-wrap gap-2">
               {allProviders.map((provider) => (
                 <button
@@ -141,7 +148,7 @@ export function Certifications() {
               onClick={handleResetFilters}
               className="text-xs font-medium text-blue-400 hover:text-blue-300 mt-4 transition-colors"
             >
-              ✕ Clear filters
+              {t.certifications.clearFilters} {/* <-- Traduit */}
             </button>
           )}
         </motion.div>
@@ -153,7 +160,7 @@ export function Certifications() {
           transition={{ duration: 0.3 }}
           className="mb-6 text-sm text-neutral-500"
         >
-          Showing {filteredCertifications.length} of {certifications.length} certifications
+          {t.certifications.showing} {filteredCertifications.length} {t.certifications.of} {certifications.length} {/* <-- Traduit */}
         </motion.div>
 
         {/* Certifications Grid */}
@@ -169,6 +176,9 @@ export function Certifications() {
                   isHovered={hoveredId === cert.id}
                   onHoverStart={() => setHoveredId(cert.id)}
                   onHoverEnd={() => setHoveredId(null)}
+                  lang={lang} // <-- Passé à la carte
+                  t={t} // <-- Passé à la carte
+                  translateTag={translateTag} // <-- Passé à la carte
                 />
               ))
             ) : (
@@ -178,7 +188,7 @@ export function Certifications() {
                 exit={{ opacity: 0 }}
                 className="col-span-full text-center py-20"
               >
-                <div className="text-neutral-500 text-sm">No certifications found matching your filters.</div>
+                <div className="text-neutral-500 text-sm">{t.certifications.noResults}</div> {/* <-- Traduit */}
               </motion.div>
             )}
           </AnimatePresence>
@@ -197,6 +207,9 @@ function CertificationCard({
   isHovered,
   onHoverStart,
   onHoverEnd,
+  lang,
+  t,
+  translateTag
 }: {
   cert: Certification
   index: number
@@ -204,7 +217,14 @@ function CertificationCard({
   isHovered: boolean
   onHoverStart: () => void
   onHoverEnd: () => void
+  lang: string
+  t: any
+  translateTag: (tag: string) => string
 }) {
+  // Choix de la langue pour les champs traduits
+  const title = lang === 'fr' ? cert.titleFr : cert.title
+  const description = lang === 'fr' ? cert.descriptionFr : cert.description
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 30 }}
@@ -212,16 +232,12 @@ function CertificationCard({
       transition={{ delay: 0.1 + index * 0.05, duration: 0.5 }}
       onHoverStart={onHoverStart}
       onHoverEnd={onHoverEnd}
-      
-      // ADDED: Tactile lift effect to match your Project cards
       whileHover={{ 
         scale: 1.02, 
         y: -5,
         zIndex: 10,
         transition: { duration: 0.2, ease: 'easeOut' }
       }}
-      
-      // UPDATED: Border changes to blue on hover, removed transition-all
       className="group relative rounded-xl border border-white/5 hover:border-blue-400/50 bg-white/[0.02] hover:bg-white/[0.04] transition-colors duration-300 overflow-hidden flex flex-col h-full"
     >
       {/* Provider Badge */}
@@ -237,12 +253,12 @@ function CertificationCard({
       <div className="flex-1 p-5 pt-0">
         {/* Title */}
         <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-blue-400 transition-colors duration-200 leading-snug">
-          {cert.title}
+          {title} {/* <-- Traduit */}
         </h3>
 
         {/* Description */}
         <p className="text-sm text-neutral-500 leading-relaxed mb-4">
-          {cert.description}
+          {description} {/* <-- Traduit */}
         </p>
 
         {/* Tags */}
@@ -252,13 +268,13 @@ function CertificationCard({
               key={tag}
               className="px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-neutral-500 bg-white/5 rounded hover:bg-white/10 transition-colors cursor-pointer"
             >
-              {tag}
+              {translateTag(tag)} {/* <-- Tag traduit */}
             </span>
           ))}
         </div>
       </div>
 
-      {/* Action Button - NOW ALWAYS VISIBLE & PUSHED TO BOTTOM */}
+      {/* Action Button */}
       <div className="p-5 pt-0 mt-auto">
         <a
           href={cert.certificateUrl}
@@ -272,7 +288,7 @@ function CertificationCard({
           className="w-full flex items-center justify-center gap-2 py-2.5 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 rounded-lg text-xs font-medium text-blue-300 hover:text-blue-200 hover:border-blue-500/50 hover:from-blue-500/30 hover:to-purple-500/30 transition-all"
         >
           <CertificateIcon size={14} />
-          View Certificate
+          {t.certifications.viewCertificate} {/* <-- Traduit */}
         </a>
       </div>
 

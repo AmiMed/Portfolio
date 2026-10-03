@@ -1,0 +1,405 @@
+// lib/translations.ts
+export const translations = {
+  en: {
+    nav: {
+      home: 'Home',
+      about: 'About',
+      projects: 'Projects',
+      certifications: 'Certifications',
+      docs: 'Documentation',
+      contact: 'Contact',
+    },
+    hero: {
+      available: 'Available for new opportunities',
+      greeting: "Hi, I'm",
+      role: 'Software Engineer & Full Stack Developer',
+      viewWork: 'View My Work',
+      contactMe: 'Contact Me',
+      aiAssistant: 'Ask My AI Assistant',
+    },
+    loader: {
+      loading: 'Initializing System',
+    },
+    about: {
+      label: 'About Me',
+      cleanCodeTitle: 'Clean Code',
+      cleanCodeSubtitle: 'Enthusiast',
+      headingStart: 'Passionate about creating',
+      headingHighlight: 'digital experiences',
+      headingEnd: 'that matter',
+      description1: "Full-stack engineer with over 5 years of experience building mobile and web applications, from conception to production deployment. I specialize in React Native, React, Next.js, and Laravel, with a growing focus on integrating AI and automation to enhance features and optimize business processes.",
+      description2: "Rigorous and results-driven, I thrive in Agile environments and have successfully shipped multiple applications across Google Play, App Store, and Huawei AppGallery. Beyond coding, I'm passionate about continuous learning — exploring generative AI.",
+      ctaContact: 'Get in Touch',
+      ctaDownload: 'Download CV',
+      stats: [
+        { number: '5', label: 'Years Experience' },
+        { number: '5+', label: 'Technologies' },
+      ],
+      highlights: [
+        { title: 'Full-Stack Development', description: 'Building complete web applications from frontend to backend with modern frameworks.' },
+        { title: 'Clean Architecture', description: 'Writing scalable, maintainable code with proper design patterns and best practices.' },
+        { title: 'Fast Delivery', description: 'Efficient development workflow with CI/CD, ensuring timely project delivery.' },
+        { title: 'Clear Communication', description: 'Regular updates and transparent communication throughout the project lifecycle.' },
+      ]
+    },
+    projects: {
+      label: 'Projects',
+      headingStart: 'Selected',
+      headingHighlight: 'works',
+      description: "A collection of projects I've built — from full-stack apps to open-source tools.",
+      filterAll: 'All',
+      filterFeatured: 'In production',
+      details: 'Details',
+      badgeFeatured: 'In production'
+    },
+    modal: {
+      keyFeatures: 'Key Features',
+      viewLive: 'View the app online',
+      viewCode: 'View Source Code'
+    },
+    certifications: {
+      label: 'Certifications',
+      headingStart: 'Professional',
+      headingHighlight: 'Certifications',
+      description: 'Industry-recognized certifications across cloud, AI, DevOps, and agile methodologies.',
+      filterTech: 'Filter by Technology',
+      filterSource: 'Filter by Source',
+      clearFilters: '✕ Clear filters',
+      showing: 'Showing',
+      of: 'of',
+      noResults: 'No certifications found matching your filters.',
+      viewCertificate: 'View Certificate',
+      tags: {
+        'Agile': 'Agile',
+        'Scrum': 'Scrum',
+        'Project Management': 'Project Management',
+        'Process Improvement': 'Process Improvement',
+        'Six Sigma': 'Six Sigma',
+        'Quality Management': 'Quality Management',
+        'Kanban': 'Kanban',
+        'DevOps': 'DevOps',
+        'Operations': 'Operations',
+        'AI': 'AI',
+        'Agents': 'Agents',
+        'Claude': 'Claude',
+        'Machine Learning': 'Machine Learning',
+        'Foundations': 'Foundations',
+        'Protocols': 'Protocols',
+        'Code Generation': 'Code Generation',
+        'Automation': 'Automation',
+        'Workflows': 'Workflows',
+        'LLM': 'LLM',
+        'Docker': 'Docker',
+        'Containerization': 'Containerization',
+        'LangChain': 'LangChain',
+        'Python': 'Python',
+        'Planning': 'Planning',
+        'Leadership': 'Leadership',
+        'AWS': 'AWS',
+        'Cloud': 'Cloud',
+        'Infrastructure': 'Infrastructure',
+        'Google Cloud': 'Google Cloud',
+        'Prompt Engineering': 'Prompt Engineering',
+        'Generative AI': 'Generative AI',
+        'Deep Learning': 'Deep Learning',
+        'Kubernetes': 'Kubernetes',
+        'Azure': 'Azure'
+      }
+    },
+    docs: {
+      label: 'Documentation',
+      gettingStarted: 'Getting Started',
+      introTitle: 'Introduction',
+      introText: 'Welcome to my portfolio documentation. This platform is not just a showcase of my work, but a living example of my engineering capabilities. Built with Next.js and integrated with AI, it demonstrates my ability to build modern, scalable, and interactive web applications.',
+      stackTitle: 'Tech Stack',
+      faqTitle: 'Recruiter FAQ',
+      quickLinks: [
+        { id: 'intro', label: 'Introduction' },
+        { id: 'stack', label: 'Tech Stack' },
+        { id: 'faq', label: 'Recruiter FAQ' }
+      ],
+      techStack: [
+        { name: 'Next.js', desc: 'App Router, SSR/SSG' },
+        { name: 'TypeScript', desc: 'Type safety & interfaces' },
+        { name: 'Tailwind CSS', desc: 'Utility-first styling' },
+        { name: 'Framer Motion', desc: 'Interactive animations' },
+        { name: 'Vercel AI SDK', desc: 'Generative AI & RAG' },
+        { name: 'Supabase', desc: 'Database & Auth' },
+        { name: 'Docker', desc: 'Containerization' },
+        { name: 'Shadcn UI', desc: 'Accessible components' }
+      ],
+      faqs: [
+        { q: 'Is Med Amine available for new opportunities?', a: 'Yes! I am actively looking for new FullStack or Mobile Developer roles. I am open to remote work globally and relocation. You can contact me directly at boutitimedamine1@gmail.com.' },
+        { q: 'What is his strongest technical advantage?', a: 'My main strength is end-to-end delivery. I can build a product from the Figma design, deploy it with CI/CD pipelines (Docker, GitHub Actions), and integrate modern AI features (LLMs, Voice AI) to optimize business processes.' },
+        { q: 'Does he have mobile development experience?', a: 'Yes, I have over 3 years of experience shipping React Native (Expo) apps to Google Play, the App Store, and Huawei AppGallery. Check the "Projects" section for the ARVEA Business app.' },
+        { q: 'How many years of experience does he have?', a: 'I have over 5 years of professional experience as a Full-Stack Developer, primarily at Maison du Web, where I have worked on the design and development of web and mobile applications.' }
+      ]
+    },
+    contact: {
+      label: 'Contact',
+      headerStart: "Let's work",
+      headerHighlight: 'together',
+      findMe: 'Find me on',
+      available: 'Currently available',
+      info: [
+        { label: 'Email', value: 'boutitimedamine1@gmail.com', href: 'mailto:boutitimedamine1@gmail.com' },
+        { label: 'WhatsApp', value: '+216 28 635 316', href: 'https://wa.me/21628635316?text=Hello%20Med%20Amine,%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20connect!' },
+        { label: 'Location', value: 'Tunisie', href: null },
+        { label: 'Availability', value: 'Open to opportunities', href: null }
+      ],
+      form: {
+        name: 'Name',
+        email: 'Email',
+        subject: 'Subject',
+        message: 'Message',
+        namePlaceholder: 'Your name',
+        emailPlaceholder: 'your@email.com',
+        subjectPlaceholder: 'What is this about?',
+        messagePlaceholder: 'Tell me about your project...',
+        send: 'Send Message',
+        sending: 'Sending...',
+        sent: 'Message sent!',
+        error: 'Failed to send',
+        errors: {
+          nameRequired: 'Name is required',
+          nameShort: 'Name must be at least 2 characters',
+          emailRequired: 'Email is required',
+          emailInvalid: 'Please enter a valid email address',
+          messageRequired: 'Message is required',
+          messageShort: 'Message must be at least 10 characters'
+        }
+      },
+      footer: 'Developed by BOUTITI MED AMINE'
+    },
+    chat: {
+  headerTitle: "Med Amine's AI Assistant",
+  welcomeTitle: "👋 Hello! I'm Med Amine's AI Assistant.",
+  welcomeDesc: "I can help you learn about his FullStack experience, tech stack, and availability for new roles.",
+  welcomeSpeech: "Hello! I'm Med Amine's AI Assistant. I can help you learn about his FullStack experience, tech stack, and availability for new roles.",
+  prompt1Text: "Are you available for new opportunities?",
+  prompt1Label: "💼 Are you available for hire?",
+  prompt2Text: "Tell me about your FullStack skills",
+  prompt2Label: "⚙️ Tell me about your FullStack skills",
+  prompt3Text: "Tell me about your projects ?",
+  prompt3Label: "🚀 Tell me about your projects",
+  typing: "Typing...",
+  inputPlaceholder: "Type a message...",
+  mute: "Mute AI Voice",
+  unmute: "Unmute AI Voice",
+  fabText: "Med Amine's AI Assistant"
+},
+feedback: {
+  successTitle: 'Thank You!',
+  successDesc: 'Your feedback has been sent successfully.',
+  title: 'Leave a Rating',
+  desc: 'How would you rate my portfolio? Let me know your thoughts!',
+  placeholder: 'Tell me what you think...',
+  sending: 'Sending...',
+  submit: 'Send Feedback',
+  fabText: 'Send Feedback'
+},
+
+  },
+  fr: {
+    nav: {
+      home: 'Accueil',
+      about: 'À propos',
+      projects: 'Projets',
+      certifications: 'Certifications',
+      docs: 'Documentation',
+      contact: 'Contact',
+    },
+    hero: {
+      available: 'Disponible pour de nouvelles opportunités',
+      greeting: "Bonjour, je suis",
+      role: 'Ingénieur Logiciel & Développeur Full Stack',
+      viewWork: 'Voir mes projets',
+      contactMe: 'Me contacter',
+      aiAssistant: 'Demander à mon assistant IA',
+    },
+    loader: {
+      loading: 'Initialisation du système',
+    },
+    about: {
+      label: 'À propos de moi',
+      cleanCodeTitle: 'Code Propre',
+      cleanCodeSubtitle: 'Passionné',
+      headingStart: 'Passionné par la création d\'',
+      headingHighlight: 'expériences numériques',
+      headingEnd: 'qui comptent',
+      description1: "Ingénieur full-stack avec plus de 5 ans d'expérience dans la création d'applications mobiles et web, de la conception au déploiement en production. Je me spécialise dans React Native, React, Next.js et Laravel, avec un accent croissant sur l'intégration de l'IA et de l'automatisation pour améliorer les fonctionnalités et optimiser les processus métier.",
+      description2: "Rigoureux et axé sur les résultats, je m'épanouis dans les environnements Agile et j'ai livré avec succès plusieurs applications sur Google Play, App Store et Huawei AppGallery. Au-delà du code, je suis passionné par l'apprentissage continu — explorant l'IA générative.",
+      ctaContact: 'Me contacter',
+      ctaDownload: 'Télécharger CV',
+      stats: [
+        { number: '5', label: 'Ans d\'expérience' },
+        { number: '5+', label: 'Technologies' },
+      ],
+      highlights: [
+        { title: 'Développement Full-Stack', description: 'Création d\'applications web complètes, du frontend au backend, avec des frameworks modernes.' },
+        { title: 'Architecture Propre', description: 'Écriture de code évolutif et maintenable avec des design patterns et des bonnes pratiques.' },
+        { title: 'Livraison Rapide', description: 'Flux de développement efficace avec CI/CD, garantissant une livraison à temps des projets.' },
+        { title: 'Communication Claire', description: 'Mises à jour régulières et communication transparente tout au long du cycle de vie du projet.' },
+      ]
+    },
+    projects: {
+      label: 'Projets',
+      headingStart: 'Projets',
+      headingHighlight: 'sélectionnés',
+      description: "Une collection de projets que j'ai réalisés — des applications full-stack aux outils open-source.",
+      filterAll: 'Tous',
+      filterFeatured: 'En production',
+      details: 'Détails',
+      badgeFeatured: 'En production'
+    },
+    modal: {
+      keyFeatures: 'Fonctionnalités Clés',
+      viewLive: "Voir l'application en ligne",
+      viewCode: 'Voir le Code Source'
+    },
+    certifications: {
+      label: 'Certifications',
+      headingStart: 'Certifications',
+      headingHighlight: 'Professionnelles',
+      description: 'Certifications reconnues par l\'industrie couvrant le cloud, l\'IA, le DevOps et les méthodologies agiles.',
+      filterTech: 'Filtrer par Technologie',
+      filterSource: 'Filtrer par Source',
+      clearFilters: '✕ Effacer les filtres',
+      showing: 'Affichage de',
+      of: 'sur',
+      noResults: 'Aucune certification trouvée correspondant à vos filtres.',
+      viewCertificate: 'Voir le Certificat',
+      tags: {
+        'Agile': 'Agile',
+        'Scrum': 'Scrum',
+        'Project Management': 'Gestion de Projet',
+        'Process Improvement': 'Amélioration des Processus',
+        'Six Sigma': 'Six Sigma',
+        'Quality Management': 'Gestion de la Qualité',
+        'Kanban': 'Kanban',
+        'DevOps': 'DevOps',
+        'Operations': 'Opérations',
+        'AI': 'IA',
+        'Agents': 'Agents',
+        'Claude': 'Claude',
+        'Machine Learning': 'Machine Learning',
+        'Foundations': 'Fondamentaux',
+        'Protocols': 'Protocoles',
+        'Code Generation': 'Génération de Code',
+        'Automation': 'Automatisation',
+        'Workflows': 'Flux de Travail',
+        'LLM': 'LLM',
+        'Docker': 'Docker',
+        'Containerization': 'Conteneurisation',
+        'LangChain': 'LangChain',
+        'Python': 'Python',
+        'Planning': 'Planification',
+        'Leadership': 'Leadership',
+        'AWS': 'AWS',
+        'Cloud': 'Cloud',
+        'Infrastructure': 'Infrastructure',
+        'Google Cloud': 'Google Cloud',
+        'Prompt Engineering': 'Ingénierie de Prompt',
+        'Generative AI': 'IA Générative',
+        'Deep Learning': 'Deep Learning',
+        'Kubernetes': 'Kubernetes',
+        'Azure': 'Azure'
+      }
+    },
+    docs: {
+      label: 'Documentation',
+      gettingStarted: 'Pour Commencer',
+      introTitle: 'Introduction',
+      introText: "Bienvenue dans la documentation de mon portfolio. Cette plateforme n'est pas seulement une vitrine de mon travail, mais un exemple vivant de mes capacités d'ingénierie. Construit avec Next.js et intégré à l'IA, il démontre ma capacité à créer des applications web modernes, évolutives et interactives.",
+      stackTitle: 'Stack Technique',
+      faqTitle: 'FAQ Recruteur',
+      quickLinks: [
+        { id: 'intro', label: 'Introduction' },
+        { id: 'stack', label: 'Stack Technique' },
+        { id: 'faq', label: 'FAQ Recruteur' }
+      ],
+      techStack: [
+        { name: 'Next.js', desc: 'App Router, SSR/SSG' },
+        { name: 'TypeScript', desc: 'Sécurité des types & interfaces' },
+        { name: 'Tailwind CSS', desc: 'Styling utilitaire' },
+        { name: 'Framer Motion', desc: 'Animations interactives' },
+        { name: 'Vercel AI SDK', desc: 'IA générative & RAG' },
+        { name: 'Supabase', desc: 'Base de données & Auth' },
+        { name: 'Docker', desc: 'Conteneurisation' },
+        { name: 'Shadcn UI', desc: 'Composants accessibles' }
+      ],
+      faqs: [
+        { q: 'Med Amine est-il disponible pour de nouvelles opportunités ?', a: "Oui ! Je recherche activement de nouveaux postes de Développeur FullStack ou Mobile. Je suis ouvert au travail à distance à l'échelle mondiale et à la relocalisation. Vous pouvez me contacter directement à boutitimedamine1@gmail.com." },
+        { q: 'Quel est son principal avantage technique ?', a: "Ma principale force est la livraison de bout en bout. Je peux créer un produit à partir d'un design Figma, le déployer avec des pipelines CI/CD (Docker, GitHub Actions) et intégrer des fonctionnalités d'IA modernes (LLM, Voice AI) pour optimiser les processus métier." },
+        { q: 'A-t-il de l\'expérience en développement mobile ?', a: 'Oui, j\'ai plus de 3 ans d\'expérience dans la publication d\'applications React Native (Expo) sur Google Play, l\'App Store et Huawei AppGallery. Consultez la section "Projets" pour l\'application ARVEA Business.' },
+        { q: 'Combien d\'années d\'expérience a-t-il ?', a: "J'ai plus de 5 ans d'expérience professionnelle en tant que Développeur Full-Stack, principalement chez Maison du Web, où j'ai travaillé sur la conception et le développement d'applications web et mobiles." }
+      ]
+    },
+    contact: {
+      label: 'Contact',
+      headerStart: 'Travaillons',
+      headerHighlight: 'ensemble',
+      findMe: 'Retrouvez-moi sur',
+      available: 'Actuellement disponible',
+      info: [
+        { label: 'Email', value: 'boutitimedamine1@gmail.com', href: 'mailto:boutitimedamine1@gmail.com' },
+        { label: 'WhatsApp', value: '+216 28 635 316', href: 'https://wa.me/21628635316?text=Hello%20Med%20Amine,%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20connect!' },
+        { label: 'Localisation', value: 'Tunisie', href: null },
+        { label: 'Disponibilité', value: 'Ouvert aux opportunités', href: null }
+      ],
+      form: {
+        name: 'Nom',
+        email: 'Email',
+        subject: 'Sujet',
+        message: 'Message',
+        namePlaceholder: 'Votre nom',
+        emailPlaceholder: 'votre@email.com',
+        subjectPlaceholder: 'De quoi s\'agit-il ?',
+        messagePlaceholder: 'Parlez-moi de votre projet...',
+        send: 'Envoyer le message',
+        sending: 'Envoi en cours...',
+        sent: 'Message envoyé !',
+        error: 'Échec de l\'envoi',
+        errors: {
+          nameRequired: 'Le nom est requis',
+          nameShort: 'Le nom doit comporter au moins 2 caractères',
+          emailRequired: 'L\'email est requis',
+          emailInvalid: 'Veuillez entrer une adresse email valide',
+          messageRequired: 'Le message est requis',
+          messageShort: 'Le message doit comporter au moins 10 caractères'
+        }
+      },
+      footer: 'Développé par BOUTITI MED AMINE'
+    },
+    chat: {
+  headerTitle: "Assistant IA de Med Amine",
+  welcomeTitle: "👋 Bonjour ! Je suis l'assistant IA de Med Amine.",
+  welcomeDesc: "Je peux vous aider à en savoir plus sur son expérience FullStack, sa stack technique et sa disponibilité pour de nouveaux postes.",
+  welcomeSpeech: "Bonjour ! Je suis l'assistant IA de Med Amine. Je peux vous aider à en savoir plus sur son expérience FullStack, sa stack technique et sa disponibilité pour de nouveaux postes.",
+  prompt1Text: "Es-tu disponible pour de nouvelles opportunités ?",
+  prompt1Label: "💼 Es-tu disponible pour un emploi ?",
+  prompt2Text: "Parle-moi de tes compétences FullStack",
+  prompt2Label: "⚙️ Parle-moi de tes compétences FullStack",
+  prompt3Text: "Parle-moi de tes projets ?",
+  prompt3Label: "🚀 Parle-moi de tes projets",
+  typing: "Écrit...",
+  inputPlaceholder: "Écrivez un message...",
+  mute: "Couper la voix de l'IA",
+  unmute: "Activer la voix de l'IA",
+  fabText: "Assistant IA de Med Amine"
+},
+feedback: {
+  successTitle: 'Merci !',
+  successDesc: 'Votre commentaire a été envoyé avec succès.',
+  title: 'Laissez une note',
+  desc: 'Comment évalueriez-vous mon portfolio ? Faites-moi part de vos pensées !',
+  placeholder: 'Dites-moi ce que vous en pensez...',
+  sending: 'Envoi...',
+  submit: 'Envoyer le commentaire',
+  fabText: 'Envoyer le commentaire'
+}
+  },
+  
+};
+
+export type Lang = 'en' | 'fr';

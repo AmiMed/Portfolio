@@ -2,8 +2,10 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useChat } from '@ai-sdk/react'
-import { motion, AnimatePresence } from 'framer-motion' // Added AnimatePresence for smooth transitions
+import { motion, AnimatePresence } from 'framer-motion'
 import { Bot, X, Send, Mic, Volume2, VolumeX } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext' // <-- Import ajouté
+
 export function ChatWidget({ 
   isOpen, 
   setIsOpen 
@@ -11,6 +13,8 @@ export function ChatWidget({
   isOpen: boolean; 
   setIsOpen: (open: boolean) => void 
 }) {
+  const { t, lang } = useLanguage() // <-- Hook ajouté
+  
   const [input, setInput] = useState('')
   const [isListening, setIsListening] = useState(false)
   const [isVoiceMode, setIsVoiceMode] = useState(true)
@@ -21,6 +25,9 @@ export function ChatWidget({
   
   const isLoading = status === 'submitted' || status === 'streaming'
 
+  // Détermine la langue pour la parole (voix)
+  const speechLang = lang === 'fr' ? 'fr-FR' : 'en-US'
+
   // 1. Initialize Speech Recognition
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -28,7 +35,7 @@ export function ChatWidget({
       
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
-        recognition.lang = 'en-US'; 
+        recognition.lang = speechLang; // <-- Langue dynamique
         recognition.interimResults = false;
         recognition.continuous = false;
 
@@ -46,7 +53,7 @@ export function ChatWidget({
         recognitionRef.current = recognition;
       }
     }
-  }, []);
+  }, [lang]); // <-- Se met à jour si la langue change
 
   // 2. Text-to-Speech for AI Replies
   useEffect(() => {
@@ -59,28 +66,26 @@ export function ChatWidget({
         if (textToSpeak) {
           window.speechSynthesis.cancel();
           const utterance = new SpeechSynthesisUtterance(textToSpeak);
-          utterance.lang = 'en-US';
+          utterance.lang = speechLang; // <-- Langue dynamique
           window.speechSynthesis.speak(utterance);
         }
       }
     }
-  }, [messages, isLoading, isVoiceMode]);
+  }, [messages, isLoading, isVoiceMode, lang]);
 
   // 3. Speak Welcome Message on Mount (Page Reload)
   useEffect(() => {
     if (isVoiceMode && isOpen && messages.length === 0) {
-      const welcomeText = "Hello! I'm Med Amine's AI Assistant. I can help you learn about his FullStack experience, tech stack, and availability for new roles.";
-      
       const timer = setTimeout(() => {
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(welcomeText);
-        utterance.lang = 'en-US';
+        const utterance = new SpeechSynthesisUtterance(t.chat.welcomeSpeech);
+        utterance.lang = speechLang; // <-- Langue dynamique
         window.speechSynthesis.speak(utterance);
       }, 500);
 
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isOpen, lang]);
 
   // Stop audio immediately when the user clicks mute
   useEffect(() => {
@@ -127,13 +132,13 @@ export function ChatWidget({
           <div className="bg-muted/50 p-4 flex items-center justify-between border-b border-border">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <h3 className="text-foreground font-semibold text-sm">Med Amine's AI Assistant</h3>
+              <h3 className="text-foreground font-semibold text-sm">{t.chat.headerTitle}</h3> {/* <-- Traduit */}
             </div>
             <div className="flex items-center gap-2">
               <button 
                 onClick={() => setIsVoiceMode(!isVoiceMode)} 
                 className={`text-muted-foreground hover:text-foreground transition-colors ${isVoiceMode ? 'text-blue-500' : ''}`}
-                title={isVoiceMode ? "Mute AI Voice" : "Unmute AI Voice"}
+                title={isVoiceMode ? t.chat.mute : t.chat.unmute} // <-- Traduit
               >
                 {isVoiceMode ? <Volume2 size={18} /> : <VolumeX size={18} />}
               </button>
@@ -147,29 +152,29 @@ export function ChatWidget({
           <div className="flex-1 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
             {messages.length === 0 && (
               <div className="text-muted-foreground text-sm text-center mt-8 space-y-4">
-                <p className="text-foreground font-semibold text-base">👋 Hello! I'm Med Amine's AI Assistant.</p>
+                <p className="text-foreground font-semibold text-base">{t.chat.welcomeTitle}</p> {/* <-- Traduit */}
                 <p className="text-muted-foreground px-2">
-                  I can help you learn about his FullStack experience, tech stack, and availability for new roles.
+                  {t.chat.welcomeDesc} {/* <-- Traduit */}
                 </p>
                 
                 <div className="flex flex-col gap-2 mt-6 text-left">
                   <button 
-                    onClick={() => handleQuickPrompt("Are you available for new opportunities?")}
+                    onClick={() => handleQuickPrompt(t.chat.prompt1Text)}
                     className="bg-muted hover:bg-muted/70 text-foreground text-xs p-2.5 rounded-lg border border-border transition-colors flex items-center gap-2"
                   >
-                    💼 Are you available for hire?
+                    {t.chat.prompt1Label} {/* <-- Traduit */}
                   </button>
                   <button 
-                    onClick={() => handleQuickPrompt("Tell me about your FullStack skills")}
+                    onClick={() => handleQuickPrompt(t.chat.prompt2Text)}
                     className="bg-muted hover:bg-muted/70 text-foreground text-xs p-2.5 rounded-lg border border-border transition-colors flex items-center gap-2"
                   >
-                    ⚙️ Tell me about your FullStack skills
+                    {t.chat.prompt2Label} {/* <-- Traduit */}
                   </button>
                   <button 
-                    onClick={() => handleQuickPrompt("Tell me about your projects ?")}
+                    onClick={() => handleQuickPrompt(t.chat.prompt3Text)}
                     className="bg-muted hover:bg-muted/70 text-foreground text-xs p-2.5 rounded-lg border border-border transition-colors flex items-center gap-2"
                   >
-                    🚀 Tell me about your projects 
+                    {t.chat.prompt3Label} {/* <-- Traduit */}
                   </button>
                 </div>
               </div>
@@ -195,7 +200,7 @@ export function ChatWidget({
             {isLoading && (
               <div className="flex justify-start">
                 <div className="bg-muted p-3 rounded-2xl text-sm text-muted-foreground">
-                  Typing... 
+                  {t.chat.typing} {/* <-- Traduit */}
                 </div>
               </div>
             )}
@@ -208,7 +213,7 @@ export function ChatWidget({
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Type a message..."
+              placeholder={t.chat.inputPlaceholder} // <-- Traduit
               className="flex-1 bg-background text-foreground text-sm rounded-full px-4 py-2 outline-none border border-border focus:border-primary transition-colors"
             />
             <button 
@@ -224,7 +229,7 @@ export function ChatWidget({
       )}
       </AnimatePresence>
 
-           {/* Floating Action Button with Text & Animations */}
+      {/* Floating Action Button with Text & Animations */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
         initial={{ scale: 0, opacity: 0 }}
@@ -237,7 +242,7 @@ export function ChatWidget({
           boxShadow: [
             '0 0 0 0px rgba(37, 99, 235, 0.5)', 
             '0 0 0 12px rgba(37, 99, 235, 0)'
-          ] // Blue radar pulse when closed
+          ] 
         }}
         transition={{ 
           scale: { type: 'spring', stiffness: 200 },
@@ -253,10 +258,9 @@ export function ChatWidget({
           <X className="shrink-0" size={27} />
         ) : (
           <>
-            {/* Replaced MessageCircle with Bot icon */}
             <Bot className="shrink-0" size={27} />
             <span className="max-w-0 group-hover:max-w-[250px] opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out whitespace-nowrap overflow-hidden font-medium text-sm pl-0 group-hover:pl-2">
-              Med Amine's AI Assistant
+              {t.chat.fabText} {/* <-- Traduit */}
             </span>
           </>
         )}

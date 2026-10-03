@@ -3,7 +3,8 @@
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { useRef, useState } from 'react'
 import { projects, type Project } from '@/data/projects'
-import { ProjectDetailsModal } from './ProjectDetailsModal' // Adjust import path as needed
+import { ProjectDetailsModal } from './ProjectDetailsModal'
+import { useLanguage } from '@/context/LanguageContext' // <-- Import ajouté
 
 type FilterType = 'all' | 'featured'
 
@@ -12,14 +13,25 @@ export function Projects() {
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
   const [filter, setFilter] = useState<FilterType>('all')
   const [hoveredId, setHoveredId] = useState<string | null>(null)
-  
-  // NEW: State to track which project's details to show
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  
+  const { t, lang } = useLanguage() // <-- Hook ajouté
 
   const filteredProjects: Project[] =
     filter === 'featured'
       ? projects.filter((p) => p.featured)
       : projects
+
+  // Fonction pour récupérer le projet avec les textes dans la bonne langue
+  const getLocalizedProject = (project: Project): Project => {
+    return {
+      ...project,
+      title: lang === 'fr' ? project.titleFr : project.title,
+      description: lang === 'fr' ? project.descriptionFr : project.description,
+      longDescription: lang === 'fr' ? project.longDescriptionFr : project.longDescription,
+      features: lang === 'fr' ? project.featuresFr : project.features,
+    }
+  }
 
   return (
     <section
@@ -32,7 +44,7 @@ export function Projects() {
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative">
-     {/* Section Label */}
+        {/* Section Label */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -40,7 +52,7 @@ export function Projects() {
           className="flex items-center gap-3 mb-6"
         >
           <span className="text-xs font-medium uppercase tracking-[0.1em] text-neutral-500">
-            Projects
+            {t.projects.label} {/* <-- Traduit */}
           </span>
           <span className="flex-1 h-px bg-white/10" />
           <span className="text-xs font-medium text-neutral-600">02</span>
@@ -54,14 +66,13 @@ export function Projects() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-white leading-tight">
-              Selected{' '}
+              {t.projects.headingStart}{' '} {/* <-- Traduit */}
               <span className="bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent">
-                works
+                {t.projects.headingHighlight} {/* <-- Traduit */}
               </span>
             </h2>
             <p className="mt-4 text-neutral-400 text-base max-w-lg">
-              A collection of projects I've built — from full-stack apps to
-              open-source tools.
+              {t.projects.description} {/* <-- Traduit */}
             </p>
           </motion.div>
 
@@ -72,17 +83,11 @@ export function Projects() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex items-center gap-1 p-1 bg-white/5 border border-white/10 rounded-full"
           >
-            <FilterButton
-              active={filter === 'all'}
-              onClick={() => setFilter('all')}
-            >
-              All ({projects.length})
+            <FilterButton active={filter === 'all'} onClick={() => setFilter('all')}>
+              {t.projects.filterAll} ({projects.length}) {/* <-- Traduit */}
             </FilterButton>
-            <FilterButton
-              active={filter === 'featured'}
-              onClick={() => setFilter('featured')}
-            >
-              In production ({projects.filter((p) => p.featured).length})
+            <FilterButton active={filter === 'featured'} onClick={() => setFilter('featured')}>
+              {t.projects.filterFeatured} ({projects.filter((p) => p.featured).length}) {/* <-- Traduit */}
             </FilterButton>
           </motion.div>
         </div>
@@ -98,25 +103,29 @@ export function Projects() {
               transition={{ duration: 0.3 }}
               className="contents"
             >
-              {filteredProjects.map((project, index) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  index={index}
-                  isInView={isInView}
-                  isHovered={hoveredId === project.id}
-                  onHoverStart={() => setHoveredId(project.id)}
-                  onHoverEnd={() => setHoveredId(null)}
-                  onDetailsClick={() => setSelectedProject(project)} // NEW: Pass trigger function
-                />
-              ))}
+              {filteredProjects.map((project, index) => {
+                const localizedProject = getLocalizedProject(project) // <-- On localise ici
+                return (
+                  <ProjectCard
+                    key={localizedProject.id}
+                    project={localizedProject} // <-- On passe le projet localisé
+                    index={index}
+                    isInView={isInView}
+                    isHovered={hoveredId === localizedProject.id}
+                    onHoverStart={() => setHoveredId(localizedProject.id)}
+                    onHoverEnd={() => setHoveredId(null)}
+                    onDetailsClick={() => setSelectedProject(localizedProject)} // <-- Et ici aussi
+                    detailsText={t.projects.details} // <-- On passe le texte "Details"
+                    badgeText={t.projects.badgeFeatured} // <-- On passe le texte du badge
+                  />
+                )
+              })}
             </motion.div>
           </AnimatePresence>
         </div>
-
       </div>
 
-      {/* NEW: Render the Modal conditionally */}
+      {/* Modal */}
       <AnimatePresence>
         {selectedProject && (
           <ProjectDetailsModal
@@ -131,15 +140,7 @@ export function Projects() {
 
 // ============ Sub Components ============
 
-function FilterButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean
-  onClick: () => void
-  children: React.ReactNode
-}) {
+function FilterButton({ active, onClick, children }: { active: boolean, onClick: () => void, children: React.ReactNode }) {
   return (
     <button
       onClick={onClick}
@@ -148,32 +149,23 @@ function FilterButton({
       }`}
     >
       {active && (
-        <motion.span
-          layoutId="activeFilter"
-          className="absolute inset-0 bg-white/10 border border-white/10 rounded-full"
-          transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
-        />
+        <motion.span layoutId="activeFilter" className="absolute inset-0 bg-white/10 border border-white/10 rounded-full" transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }} />
       )}
       <span className="relative z-10">{children}</span>
     </button>
   )
 }
-function ProjectCard({
-  project,
-  index,
-  isInView,
-  isHovered,
-  onHoverStart,
-  onHoverEnd,
-  onDetailsClick, // NEW: Receive the trigger function
-}: {
+
+function ProjectCard({ project, index, isInView, isHovered, onHoverStart, onHoverEnd, onDetailsClick, detailsText, badgeText }: {
   project: Project
   index: number
   isInView: boolean
   isHovered: boolean
   onHoverStart: () => void
   onHoverEnd: () => void
-  onDetailsClick: () => void // NEW: Type definition
+  onDetailsClick: () => void
+  detailsText: string // <-- Nouvelle prop
+  badgeText: string // <-- Nouvelle prop
 }) {
   const [imageError, setImageError] = useState(false)
   
@@ -187,7 +179,6 @@ function ProjectCard({
       whileHover={{ scale: 1.02, y: -5, zIndex: 10, transition: { duration: 0.2, ease: 'easeOut' } }}
       className="group relative rounded-xl border border-white/5 hover:border-emerald-400/50 bg-white/[0.02] hover:bg-white/[0.04] transition-colors duration-300 overflow-hidden flex flex-col"
     >
-      {/* Image */}
       <div className="relative aspect-video overflow-hidden bg-neutral-900">
         {!imageError ? (
           <motion.img
@@ -199,7 +190,6 @@ function ProjectCard({
             className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
           />
         ) : (
-          /* ... Keep your fallback svg here ... */
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-800 to-neutral-900"></div>
         )}
 
@@ -208,13 +198,12 @@ function ProjectCard({
         {project.featured && (
           <div className="absolute top-3 left-3">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 rounded-full backdrop-blur-sm">
-              In production
+              {badgeText} {/* <-- Texte traduit */}
             </span>
           </div>
         )}
       </div>
 
-      {/* Content */}
       <div className="p-5 flex-grow flex flex-col">
         <div className="flex flex-wrap gap-1.5 mb-3">
           {project.tags.slice(0, 4).map((tag) => (
@@ -232,12 +221,11 @@ function ProjectCard({
           {project.description}
         </p>
 
-        {/* NEW: Action Details Button pushed to the bottom */}
         <button 
           onClick={onDetailsClick}
           className="mt-auto pt-4 text-left text-sm font-medium text-neutral-400 hover:text-emerald-400 transition-colors flex items-center gap-1 group/btn"
         >
-          Details
+          {detailsText} {/* <-- Texte traduit */}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover/btn:translate-x-1 transition-transform">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>

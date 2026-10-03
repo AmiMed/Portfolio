@@ -3,59 +3,39 @@
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import TerminalAnimation from './Terminalanimation'
+import { useLanguage } from '@/context/LanguageContext'
 
-const stats = [
-  { number: '5', label: 'Years Experience' },
-  { number: '5+', label: 'Technologies' },
-]
-
-const highlights = [
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z" />
-        <path d="M2 17l10 5 10-5" />
-        <path d="M2 12l10 5 10-5" />
-      </svg>
-    ),
-    title: 'Full-Stack Development',
-    description: 'Building complete web applications from frontend to backend with modern frameworks.',
-  },
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <path d="M3 9h18" />
-        <path d="M9 21V9" />
-      </svg>
-    ),
-    title: 'Clean Architecture',
-    description: 'Writing scalable, maintainable code with proper design patterns and best practices.',
-  },
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 6v6l4 2" />
-      </svg>
-    ),
-    title: 'Fast Delivery',
-    description: 'Efficient development workflow with CI/CD, ensuring timely project delivery.',
-  },
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      </svg>
-    ),
-    title: 'Clear Communication',
-    description: 'Regular updates and transparent communication throughout the project lifecycle.',
-  },
-]
+const highlightIcons = [
+  // Icône 1: Full-Stack
+  <svg key="0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+    <path d="M2 17l10 5 10-5" />
+    <path d="M2 12l10 5 10-5" />
+  </svg>,
+  // Icône 2: Clean Architecture
+  <svg key="1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2" />
+    <path d="M3 9h18" />
+    <path d="M9 21V9" />
+  </svg>,
+  // Icône 3: Fast Delivery
+  <svg key="2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 6v6l4 2" />
+  </svg>,
+  // Icône 4: Clear Communication
+  <svg key="3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+  </svg>
+]// <-- Import ajouté
 
 export function About() {
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' })
+  const { t, lang } = useLanguage()
+  // Les tableaux utilisent maintenant les traductions
+  const stats = t.about.stats
+  const highlights = t.about.highlights
 
   return (
     <section
@@ -75,7 +55,7 @@ export function About() {
           className="flex items-center gap-3 mb-16"
         >
           <span className="text-xs font-medium uppercase tracking-[0.1em] text-neutral-500">
-            About Me
+            {t.about.label} {/* <-- Texte traduit */}
           </span>
           <span className="flex-1 h-px bg-white/10" />
           <span className="text-xs font-medium text-neutral-600">01</span>
@@ -92,8 +72,7 @@ export function About() {
           >
             {/* Main Image Container */}
             <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/10 bg-neutral-900">
-            <TerminalAnimation />
-             
+              <TerminalAnimation />
             </div>
 
             {/* Floating Stats Card */}
@@ -111,8 +90,8 @@ export function About() {
                   </svg>
                 </div>
                 <div>
-                  <div className="text-white font-semibold text-sm">Clean Code</div>
-                  <div className="text-neutral-500 text-xs">Enthusiast</div>
+                  <div className="text-white font-semibold text-sm">{t.about.cleanCodeTitle}</div> {/* <-- Texte traduit */}
+                  <div className="text-neutral-500 text-xs">{t.about.cleanCodeSubtitle}</div> {/* <-- Texte traduit */}
                 </div>
               </div>
             </motion.div>
@@ -130,29 +109,22 @@ export function About() {
           >
             {/* Heading */}
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-white leading-tight mb-6">
-              Passionate about creating
+              {t.about.headingStart}{' '} {/* <-- Texte traduit */}
               <span className="bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent">
-                {' '}digital experiences
-              </span>{' '}
-              that matter
+                {t.about.headingHighlight}{' '} {/* <-- Texte traduit */}
+              </span>
+              {t.about.headingEnd} {/* <-- Texte traduit */}
             </h2>
 
             {/* Description */}
-         <div className="space-y-4 text-neutral-400 text-base leading-relaxed mb-10">
-          <p>
-            Full-stack engineer with over 5 years of experience building mobile and web
-            applications, from conception to production deployment. I specialize in
-            React Native, React, Next.js, and Laravel, with a growing focus on
-            integrating AI and automation to enhance features and optimize business
-            processes.
-          </p>
-          <p>
-            Rigorous and results-driven, I thrive in Agile environments and have
-            successfully shipped multiple applications across Google Play, App Store,
-            and Huawei AppGallery. Beyond coding, I'm passionate about continuous
-            learning — exploring generative AI.
-          </p>
-        </div>
+            <div className="space-y-4 text-neutral-400 text-base leading-relaxed mb-10">
+              <p>
+                {t.about.description1} {/* <-- Texte traduit */}
+              </p>
+              <p>
+                {t.about.description2} {/* <-- Texte traduit */}
+              </p>
+            </div>
 
             {/* Tech Tags */}
             <div className="flex flex-wrap gap-2 mb-10">
@@ -184,14 +156,14 @@ export function About() {
                 whileTap={{ scale: 0.97 }}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-medium rounded-full hover:bg-neutral-200 transition-colors duration-150"
               >
-                Get in Touch
+                {t.about.ctaContact} {/* <-- Texte traduit */}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>
               </motion.a>
               <motion.a
-                href="/Curriculum_vitae_BoutitiMedAmine.pdf"
+                href={lang === 'fr' ? '/Curriculum-vitae-BoutitiMedAmine.pdf' : '/Curriculum_vitae_BoutitiMedAmine.pdf'}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.03 }}
@@ -205,13 +177,11 @@ export function About() {
                   <line x1="16" y1="17" x2="8" y2="17" />
                   <polyline points="10 9 9 9 8 9" />
                 </svg>
-                Download CV
+                {t.about.ctaDownload}
               </motion.a>
             </div>
           </motion.div>
         </div>
-
-      
 
         {/* Highlights Grid */}
         <motion.div
@@ -229,7 +199,7 @@ export function About() {
               className="group p-5 rounded-xl border border-white/5 hover:border-white/10 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-300"
             >
               <div className="w-10 h-10 rounded-lg bg-emerald-400/10 flex items-center justify-center text-emerald-400 mb-4 group-hover:bg-emerald-400/20 transition-colors duration-300">
-                {item.icon}
+                {highlightIcons[index]}
               </div>
               <h3 className="text-sm font-semibold text-white mb-2">{item.title}</h3>
               <p className="text-xs leading-relaxed text-neutral-500">{item.description}</p>
