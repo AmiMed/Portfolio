@@ -18,7 +18,7 @@ export function Hero({ onChatOpen }: { onChatOpen: () => void }) {
         className="text-center max-w-2xl"
       >
         {/* Circular photo */}
-        <motion.div
+            <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.1 }}
@@ -27,9 +27,9 @@ export function Hero({ onChatOpen }: { onChatOpen: () => void }) {
           <Image
             src="/photo.jpg"
             alt="BOUTITI MED AMINE"
-            width={200}
-            height={200}
-            className="rounded-full object-cover mx-auto w-48 h-48"
+            width={128}
+            height={128}
+            className="rounded-full object-cover mx-auto w-32 h-32"
             priority
           />
         </motion.div>
